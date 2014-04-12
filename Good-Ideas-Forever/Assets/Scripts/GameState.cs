@@ -29,8 +29,8 @@ public class GameState : MonoBehaviour {
 		this._rightShips = new List<EnemyShip> ();
 		this._leftShips = new List<EnemyShip> ();
 		this._player = new PlayerShip ();
-		InitializeShips(this._leftShips);
-		InitializeShips(this._rightShips);
+		InitializeShips(this._leftShips,_boardHeight*2);
+		InitializeShips(this._rightShips,_boardHeight*((_boardWidth-1)/2+2));
 	}
 
 	// Update is called once per frame
@@ -66,23 +66,41 @@ public class GameState : MonoBehaviour {
 		get { return _boardWidth; }
 	}
 
-	void InitializeShips(List<EnemyShip> ships)
+	void InitializeShips(List<EnemyShip> ships, int startPosition)
 	{
-		int placementIndex = 0;
-		foreach(EnemyShip enemy in ships)
+		int placementIndex = startPosition;
+		foreach (EnemyShip enemy in ships)
 		{
-			//if (placementIndex % _boardHeight + enemy.Length
-			
+			if ((placementIndex % _boardHeight + enemy.Length) > _boardHeight)
+			{
+				placementIndex = (placementIndex / _boardHeight + 1) * _boardHeight;
+			}
+			// Checks to see if the index interating through the board is placing a ship beyond the valid placement area
+			if ((placementIndex >= (_boardHeight * _boardWidth) && startPosition > ((_boardWidth - 1) / 2 * _boardHeight))
+			    || (placementIndex >= ((_boardWidth - 1) / 2 * _boardHeight) && startPosition < ((_boardWidth - 1) / 2 * _boardHeight)))
+			{
+				Debug.LogError("Attempting to place ships out of bounds");
+				break;
+			}
+			for (int i = 0; i < enemy.Length; i++)
+			{
+				_gameBoard[placementIndex / _boardHeight , placementIndex % _boardHeight + i] = enemy;
+			}
+			if ((placementIndex + enemy.Length) % _boardHeight != 0)
+				placementIndex = placementIndex + enemy.Length + 1;
+			else
+				placementIndex = placementIndex + enemy.Length;
 		}
 	}
 
 	public List<Ship> getRow(int rowIndex)
 	{
+		int index = GetWidthIndex(rowIndex);
 		List<Ship> shipRow = new List<Ship> ();
-		for(int i = 0; i < _boardHeight; i++)
+		for (int i = 0; i < _boardHeight; i++)
 		{
-			if(null != _gameBoard[i,rowIndex])
-				shipRow.Add(_gameBoard[i,rowIndex]);
+			if(null != _gameBoard[i,index])
+				shipRow.Add(_gameBoard[i,index]);
 		}
 		return shipRow; 
 	}
@@ -100,6 +118,11 @@ public class GameState : MonoBehaviour {
 	public Ship GetObjectFromPosition(int x, int y)
 	{
 		return this.Player;
+	}
+
+	public int GetWidthIndex(int x)
+	{
+		return ((_boardWidth - 1)/2 + x);
 	}
 
 }
