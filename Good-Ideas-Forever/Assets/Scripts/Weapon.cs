@@ -31,6 +31,11 @@ public class Weapon : MonoBehaviour {
 		get;
 		set;
 	}
+	public Direction FiringDirection 
+	{
+		get;
+		set;
+	}
 	/// <summary>
 	/// Gets or sets the health of the weapon.
 	/// </summary>
@@ -80,4 +85,11 @@ public class Weapon : MonoBehaviour {
 	{
 		return new EnemyShip[0];
 	}
+}
+public enum Direction 
+{
+	North,
+	South,
+	East,
+	West
 }

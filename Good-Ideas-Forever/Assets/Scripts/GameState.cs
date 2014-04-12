@@ -85,4 +85,13 @@ public class GameState : MonoBehaviour {
 		}
 		return shipRow; 
 	}
+
+	public bool DoesSpaceContainObject(int x, int y)
+	{
+		return true;
+	}
+	public Ship GetObjectFromPosition(int x, int y)
+	{
+		return this.Player;
+	}
 }

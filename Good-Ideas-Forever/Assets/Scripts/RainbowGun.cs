@@ -15,7 +15,7 @@ public class RainbowGun : Weapon {
 	public override EnemyShip[] GetTargets (int x, int y)
 	{
 		List<EnemyShip> targets = new List<EnemyShip> ();
-		
+
 		return targets.ToArray ();
 	}
 }
