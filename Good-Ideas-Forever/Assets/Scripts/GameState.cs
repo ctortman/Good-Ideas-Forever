@@ -68,9 +68,11 @@ public class GameState : MonoBehaviour {
 
 	void InitializeShips(List<EnemyShip> ships)
 	{
+		int placementIndex = 0;
 		foreach(EnemyShip enemy in ships)
 		{
-
+			//if (placementIndex % _boardHeight + enemy.Length
+			
 		}
 	}
 
@@ -83,6 +85,12 @@ public class GameState : MonoBehaviour {
 				shipRow.Add(_gameBoard[i,rowIndex]);
 		}
 		return shipRow; 
+	}
+
+	public List<Ship> getColumn(int columnIndex)
+	{
+		List<Ship> shipColumn = new List<Ship> ();
+		return shipColumn;
 	}
 
 	public bool DoesSpaceContainObject(int x, int y)
