@@ -1,10 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
-using System;
+using System.Collections;
 
 public class Ship : MonoBehaviour {
-
-	private List<Weapon> _weapons = new List<Weapon>();
 
 	// Use this for initialization
 	void Start () {
@@ -30,23 +27,8 @@ public class Ship : MonoBehaviour {
 		get;
 		set;
 	}
-	public List<Weapon> Weapons
-	{
-		get { return _weapons; }
-	}
-	public Weapon DefaultWeapon 
-	{
-		get;
-		set;
-
-	}
 	public void Move(int newStartX, int newStartY)
 	{
 
 	}
-	public void Fire(Weapon weapon)
-	{
-		weapon.Fire ();
-	}
-
 }

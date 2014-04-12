@@ -189,5 +189,9 @@ sysinfo.txt
 Rails/.idea/
 Assets/UnityVS/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll.meta
 Assets/UnityVS/Editor/SyntaxTree.VisualStudio.Unity.Messaging.dll.meta
+<<<<<<< HEAD
+
+=======
 Good-Ideas-Forever/*.csproj
 *.csproj
+>>>>>>> 5d0700916ae5b1d37616f2a0f7461c95c11fa8e1

@@ -4,12 +4,10 @@ using System.Collections.Generic;
 
 public class GameState : MonoBehaviour {
 
-	private Ship[,] _gameBoard;
+	private Object[,] _gameBoard;
 	private List<EnemyShip> _rightShips;
 	private List<EnemyShip> _leftShips;
 	private PlayerShip _player;
-	private int _boardHeight = 13;
-	private int _boardWidth = 13;
 	static public GameState instance;
 
 	void Awake ()
@@ -24,12 +22,10 @@ public class GameState : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-		this._gameBoard = new Ship[_boardWidth,_boardHeight];
+		this._gameBoard = new Object[12,12];
 		this._rightShips = new List<EnemyShip> ();
 		this._leftShips = new List<EnemyShip> ();
 		this._player = new PlayerShip ();
-		InitializeShips(_rightShips);
-		InitializeShips(_leftShips);
 	}
 
 	// Update is called once per frame
@@ -41,16 +37,6 @@ public class GameState : MonoBehaviour {
 	public Object[,] GameBoard 
 	{ 
 		get { return this._gameBoard; }
-	}
-
-	public int BoardHeight
-	{
-		get { return this._boardHeight;}
-	}
-
-	public int BoardWidth
-	{
-		get { return this._boardWidth;}
 	}
 
 	public List<EnemyShip> RightShips 
@@ -66,6 +52,7 @@ public class GameState : MonoBehaviour {
 	{
 		get { return _player; }
 	}
+<<<<<<< HEAD
 
 	void InitializeShips(List<EnemyShip> ships)
 	{
@@ -94,4 +81,6 @@ public class GameState : MonoBehaviour {
 	{
 		return this.Player;
 	}
+=======
+>>>>>>> ffa0e747ceb7a779f6bff5061c6f5e0c9624b9ee
 }
