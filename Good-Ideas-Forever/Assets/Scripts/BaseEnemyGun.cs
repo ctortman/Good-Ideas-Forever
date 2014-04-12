@@ -16,14 +16,21 @@ public class BaseEnemyGun : Weapon {
 	{
 		GameState gs = GameState.instance;
 		Ship[] possibleTargets = gs.GetShipsFrom (x, y, d);
-		if (possibleTargets.Length == 0)
-			return new EnemyShip [0] ();
-		else {
+		if (possibleTargets.Length == 0) 
+		{
+			return new EnemyShip [0];
+		}
+		else 
+		{
 			Ship current = possibleTargets[0];
-			if (current is PlayerShip)
-				return new EnemyShip [0] ();
-			else if (((EnemyShip)current)
-
+			if (((EnemyShip)current))
+			{
+				EnemyShip[] targets = new EnemyShip[1];
+				targets[0] = (EnemyShip)current;
+				return targets;
+			}
+			else
+				return new EnemyShip [0];
 		}
 	}
 }

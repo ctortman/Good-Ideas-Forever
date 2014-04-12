@@ -175,7 +175,9 @@ public class EnemyShip : Ship {
 	{
 		int goal = this.getGoal ();
 		if (goal != 0)
-			GameState.instance.MoveObject(this.StartX, this.StartY, this.StartX, this.StartY + goal)
+		{
+			GameState.instance.MoveObject(this.StartX, this.StartY, this.StartX, this.StartY + goal);
+		}
 		this.CurrentWeapon.Fire();
 	}
 
