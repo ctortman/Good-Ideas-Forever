@@ -46,10 +46,10 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\EnemyShip.cs" />
-     <Compile Include="Assets\GameState.cs" />
-     <Compile Include="Assets\PlayerShip.cs" />
-     <Compile Include="Assets\Ship.cs" />
+     <Compile Include="Assets\Scripts\EnemyShip.cs" />
+     <Compile Include="Assets\Scripts\GameState.cs" />
+     <Compile Include="Assets\Scripts\PlayerShip.cs" />
+     <Compile Include="Assets\Scripts\Ship.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
