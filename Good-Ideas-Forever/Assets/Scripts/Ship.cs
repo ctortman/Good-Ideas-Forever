@@ -27,6 +27,10 @@ public class Ship : MonoBehaviour {
 		get;
 		set;
 	}
+	public Weapon CurrentWeapon {
+		get;
+		set;
+	}
 	public void Move(int newStartX, int newStartY)
 	{
 
