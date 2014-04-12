@@ -8,6 +8,8 @@ public class GameState : MonoBehaviour {
 	private List<EnemyShip> _rightShips;
 	private List<EnemyShip> _leftShips;
 	private PlayerShip _player;
+	private int _boardHeight = 13;
+	private int _boardWidth = 13;
 	static public GameState instance;
 
 	void Awake ()
@@ -22,7 +24,7 @@ public class GameState : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-		this._gameBoard = new Object[12,12];
+		this._gameBoard = new Object[_boardWidth,_boardHeight];
 		this._rightShips = new List<EnemyShip> ();
 		this._leftShips = new List<EnemyShip> ();
 		this._player = new PlayerShip ();
@@ -37,6 +39,16 @@ public class GameState : MonoBehaviour {
 	public Object[,] GameBoard 
 	{ 
 		get { return this._gameBoard; }
+	}
+
+	public int BoardHeight
+	{
+		get { return this._boardHeight;}
+	}
+
+	public int BoardWidth
+	{
+		get { return this._boardWidth;}
 	}
 
 	public List<EnemyShip> RightShips 
