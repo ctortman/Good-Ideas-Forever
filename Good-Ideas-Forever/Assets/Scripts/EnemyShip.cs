@@ -13,3 +13,8 @@ public class EnemyShip : Ship {
 	
 	}
 }
+public enum NinjaForce
+{
+	Left,
+	Right
+}

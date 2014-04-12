@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class GameState : MonoBehaviour {
 
-	private Object[,] _gameboard;
+	private Object[,] _gameBoard;
 	private List<EnemyShip> _rightShips;
 	private List<EnemyShip> _leftShips;
 	private PlayerShip _player;
@@ -12,8 +12,10 @@ public class GameState : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-		this._gameboard = new Object[12,12];
-
+		this._gameBoard = new Object[12,12];
+		this._rightShips = new List<EnemyShip> ();
+		this._leftShips = new List<EnemyShip> ();
+		this._player = new PlayerShip ();
 	}
 	
 	// Update is called once per frame
@@ -22,4 +24,22 @@ public class GameState : MonoBehaviour {
 	
 	}
 
+	public Object[,] GameBoard 
+	{ 
+		get { return this._gameBoard; }
+	}
+
+	public List<EnemyShip> RightShips 
+	{
+		get { return _rightShips; }
+	}
+
+	public List<EnemyShip> LeftShips
+	{
+		get { return _leftShips; }
+	}
+	public PlayerShip Player 
+	{
+		get { return _player; }
+	}
 }
