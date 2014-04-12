@@ -88,8 +88,8 @@ public class Weapon : MonoBehaviour {
 }
 public enum Direction 
 {
-	North,
-	South,
-	East,
-	West
+	North = 0x1,
+	South = 0x2,
+	East = 0x4,
+	West = 0x8
 }

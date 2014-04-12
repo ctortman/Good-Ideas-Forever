@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class Ship : MonoBehaviour {
 
@@ -35,4 +35,17 @@ public class Ship : MonoBehaviour {
 	{
 
 	}
+	public KeyValuePair<int, int> WeaponLocation
+	{
+		get 
+		{
+			if (this.Length == 1)				
+				return new KeyValuePair<int, int>(this.StartX,this.StartY);
+			else
+			{
+				return new KeyValuePair<int, int>(this.StartX, this.StartY + (this.Length/2));
+			}
+		}
+	}
+
 }
