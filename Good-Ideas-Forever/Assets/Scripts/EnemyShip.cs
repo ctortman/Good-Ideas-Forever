@@ -28,6 +28,7 @@ public class EnemyShip : Ship {
 		get;
 		set;
 	}
+
 }
 public enum NinjaForce
 {
