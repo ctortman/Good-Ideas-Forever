@@ -190,3 +190,4 @@ Rails/.idea/
 Assets/UnityVS/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll.meta
 Assets/UnityVS/Editor/SyntaxTree.VisualStudio.Unity.Messaging.dll.meta
 Good-Ideas-Forever/*.csproj
+*.csproj
