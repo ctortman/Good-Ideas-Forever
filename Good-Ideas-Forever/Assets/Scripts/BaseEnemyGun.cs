@@ -12,10 +12,18 @@ public class BaseEnemyGun : Weapon {
 	protected override void Update () {
 	
 	}
-	public override EnemyShip[] GetTargets (int x, int y)
+	public override EnemyShip[] GetTargets (int x, int y, Direction d)
 	{
-		List<EnemyShip> targets = new List<EnemyShip> ();
-		
-		return targets.ToArray ();
+		GameState gs = GameState.instance;
+		Ship[] possibleTargets = gs.GetShipsFrom (x, y, d);
+		if (possibleTargets.Length == 0)
+			return new EnemyShip [0] ();
+		else {
+			Ship current = possibleTargets[0];
+			if (current is PlayerShip)
+				return new EnemyShip [0] ();
+			else if (((EnemyShip)current)
+
+		}
 	}
 }
