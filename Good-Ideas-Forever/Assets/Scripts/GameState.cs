@@ -57,6 +57,14 @@ public class GameState : MonoBehaviour {
 	{
 		get { return _player; }
 	}
+	public int BoardHeight
+	{
+		get { return this._boardHeight; }
+	}
+	public int BoardWidth
+	{
+		get { return _boardWidth; }
+	}
 
 	void InitializeShips(List<EnemyShip> ships)
 	{
@@ -85,4 +93,5 @@ public class GameState : MonoBehaviour {
 	{
 		return this.Player;
 	}
+
 }
