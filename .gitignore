@@ -1,5 +1,5 @@
-Library/
-Temp/
+Good-Ideas-Forever/Library/
+Good-Ideas-Forever/Temp/
 *.pidb
 *.csproj
 *.unityproj
@@ -189,4 +189,5 @@ sysinfo.txt
 Rails/.idea/
 Assets/UnityVS/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll.meta
 Assets/UnityVS/Editor/SyntaxTree.VisualStudio.Unity.Messaging.dll.meta
-
+Good-Ideas-Forever/*.csproj
+*.csproj
