@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class RainbowGun : Weapon {
 
@@ -12,8 +12,10 @@ public class RainbowGun : Weapon {
 	protected override void Update () {
 	
 	}
-	public override EnemyShip[] GetTargets ()
+	public override EnemyShip[] GetTargets (int x, int y)
 	{
-		return base.GetTargets ();
+		List<EnemyShip> targets = new List<EnemyShip> ();
+		
+		return targets.ToArray ();
 	}
 }
