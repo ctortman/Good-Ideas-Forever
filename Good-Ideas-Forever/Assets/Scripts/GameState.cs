@@ -113,11 +113,11 @@ public class GameState : MonoBehaviour {
 
 	public bool DoesSpaceContainObject(int x, int y)
 	{
-		return true;
+		return GetObjectFromPosition (x, y) != null;
 	}
 	public Ship GetObjectFromPosition(int x, int y)
 	{
-		return this.Player;
+		return this.GameBoard[GetWidthIndex(x), y];
 	}
 
 	public int GetWidthIndex(int x)
@@ -125,4 +125,17 @@ public class GameState : MonoBehaviour {
 		return ((_boardWidth - 1)/2 + x);
 	}
 
+	public Ship[] GetShipsFrom(int x, int y, Direction d)
+	{
+		int column = GetWidthIndex (x);
+
+
+		return new Ship[0];
+	}
+	public void MoveObject(int x1, int x2, int y1, int y2)
+	{
+		int column1 = GetWidthIndex (x2);
+		int column2 = GetWidthIndex (x2);
+
+	}
 }
