@@ -34,6 +34,12 @@ public class Ship : MonoBehaviour {
 	{
 		get { return _weapons; }
 	}
+	public Weapon DefaultWeapon 
+	{
+		get;
+		set;
+
+	}
 	public void Move(int newStartX, int newStartY)
 	{
 

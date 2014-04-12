@@ -7,6 +7,8 @@ public class EnemyShip : Ship {
 	void Start () {
 		this.Health = 3;
 		this.Peace = 0;
+		base.DefaultWeapon = new BaseEnemyGun ();
+		base.Weapons.Add (base.DefaultWeapon);
 	}
 	
 	// Update is called once per frame
@@ -28,6 +30,7 @@ public class EnemyShip : Ship {
 		get;
 		set;
 	}
+
 
 }
 public enum NinjaForce
