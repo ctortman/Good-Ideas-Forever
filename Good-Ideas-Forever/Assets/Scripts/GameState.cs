@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -39,7 +39,7 @@ public class GameState : MonoBehaviour {
 	
 	}
 
-	public Object[,] GameBoard 
+		public Ship[,] GameBoard 
 	{ 
 		get { return this._gameBoard; }
 	}
@@ -117,7 +117,7 @@ public class GameState : MonoBehaviour {
 	}
 	public Ship GetObjectFromPosition(int x, int y)
 	{
-		return this.GameBoard[GetWidthIndex(x), y];
+				return this.GameBoard[GetWidthIndex(x), y];
 	}
 
 	public int GetWidthIndex(int x)
@@ -127,14 +127,64 @@ public class GameState : MonoBehaviour {
 
 	public Ship[] GetShipsFrom(int x, int y, Direction d)
 	{
-		int column = GetWidthIndex (x);
+				//int column = GetWidthIndex (x);
+				int myY = 0;
+				int myX = 0;
+				List<Ship> s = new List<Ship> ();
+				if( d == Direction.North){
+						if(y == 0){
+								return s.ToArray();
+						}
+						for(myY = y-1; myY >= 0; myY--){
+								if(DoesSpaceContainObject(x,myY)){
+										s.Add (GetObjectFromPosition (x, myY));
+								}
+						}
+						return s.ToArray();
+				}
+				else if(d == Direction.East){
+						if(x < ( ((_boardWidth - 1)/2 )) ){
+								return s.ToArray();
+						}
+						for(myX = x+1; myX <= ( ((_boardWidth - 1)/2 )); myX++){
+								if(DoesSpaceContainObject(myX,y)){
+										s.Add (GetObjectFromPosition (myX, y));
+								}
+						}
+						return s.ToArray();
+				}
+				else if(d == Direction.South){
+						if(y == 0){
+								return s.ToArray();
+						}
+						for(myY = y+1; myY <= _boardHeight; myY++){
+								if(DoesSpaceContainObject(x,myY)){
+										s.Add (GetObjectFromPosition (x, myY));
+								}
+						}
+						return s.ToArray();
+				}
+				else if(d == Direction.West){
+						if(x < ( ((_boardWidth - 1)/2 )*-1) ){
+								return s.ToArray();
+						}
+						for(myX = x-1; myX >= ( ((_boardWidth - 1)/2 )*-1); myX--){
+								if(DoesSpaceContainObject(myX,y)){
+										s.Add (GetObjectFromPosition (myX, y));
+								}
+						}
+						return s.ToArray();
+				}
+				else{
+						Debug.LogError("You're checking a direction that is not handled. Fail!");
+				}
 
 
-		return new Ship[0];
+				return s.ToArray();
 	}
 	public void MoveObject(int x1, int x2, int y1, int y2)
 	{
-		int column1 = GetWidthIndex (x2);
+		int column1 = GetWidthIndex (x1);
 		int column2 = GetWidthIndex (x2);
 
 	}
