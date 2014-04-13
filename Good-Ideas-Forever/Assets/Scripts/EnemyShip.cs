@@ -25,17 +25,15 @@ public class EnemyShip : Ship {
 		get; 
 		set;
 	}
-	public int Health 
-	{
-		get { return _health; }
-		set 
-		{ 
-			int delta = value - this._health;
-			this._health = value;
-			if (delta < 0)
-			{
-				this.Peace -= value;
-			}
+	public int Health;
+	
+	public void setHealth(int value) 
+	{ 
+		int delta = value - this._health;
+		this._health = value;
+		if (delta < 0)
+		{
+			this.Peace -= value;
 		}
 	}
 	public int Peace 
