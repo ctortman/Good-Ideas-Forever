@@ -33,4 +33,17 @@ public class BaseEnemyGun : Weapon {
 				return new EnemyShip [0];
 		}
 	}
+	public override Direction ValidFiringDirections {
+		get 
+		{
+			if (this.OwningShip.StartX > 0)
+			{
+				return Direction.East;
+			}
+			else
+			{
+				return Direction.West;
+			}
+		}
+	}
 }

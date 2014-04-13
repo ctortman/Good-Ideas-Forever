@@ -22,5 +22,10 @@ public class RainbowGun : Weapon {
 				targets.Add ((EnemyShip)s);
 		return targets.ToArray ();
 	}
-
+	public override Direction ValidFiringDirections {
+		get 
+		{
+			return Direction.East | Direction.North | Direction.West | Direction.South;
+		}
+	}
 }
