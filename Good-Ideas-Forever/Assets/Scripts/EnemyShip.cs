@@ -216,6 +216,7 @@ public class EnemyShip : Ship {
 	{
 		GameState gs = GameState.instance;
 		gameObject.GetComponent<SpriteRenderer>().sprite = peaceSprite;
+		GameState.instance.PacificationScore += GameState.instance.PacifiedShipBenefit;
 		if (!this.IsInPacifiedLane) 
 		{
 			if (gs.GetWidthIndex(this.StartX) == 0)
@@ -268,6 +269,7 @@ public class EnemyShip : Ship {
 	{
 		if (!_sunk)
 		{
+			GameState.instance.SunkScore += GameState.instance.SunkShipCost;
 			int x = this.StartX;
 			int y = this.StartY;
 			GameObject.Instantiate(explosionPrefab,transform.position, Quaternion.identity);

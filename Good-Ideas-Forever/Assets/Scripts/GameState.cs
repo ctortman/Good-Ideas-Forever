@@ -15,6 +15,10 @@ public class GameState : MonoBehaviour {
 	private int _boardWidth = 13;
 	public int teamSize = 6;
 	private int counter = 250;
+	public int SunkShipCost = -2;
+	public int PacifiedShipBenefit = 1;
+	public int PacificationScore = 0;
+	public int SunkScore = 0;
 
 	void Awake ()
 	{
@@ -317,6 +321,16 @@ public class GameState : MonoBehaviour {
 			s.focus = new Vector3(s.StartX,s.StartY,0);
 		}
 	}
+	public int GetScore()
+	{
+		return PacificationScore + SunkScore;
+	}
+	
+	public int GetScorePercent()
+	{
+		return GetScore()/(teamSize*2*PacifiedShipBenefit);
+	}
+	
 
 	public void TakeTurn()
 	{
