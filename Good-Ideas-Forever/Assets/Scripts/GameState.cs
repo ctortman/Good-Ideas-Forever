@@ -51,7 +51,7 @@ public class GameState : MonoBehaviour {
 	
 	void FixedUpdate ()
 	{
-		if (!this.IsPlayerTurn)
+		if (!this.IsPlayerTurn )//&& !this.IsGameOver()
 		{
 			this.AITakeTurn();
 			this.IsPlayerTurn = true;
@@ -67,10 +67,21 @@ public class GameState : MonoBehaviour {
 			Rect cameraRect = Camera.main.pixelRect;
 			
 			//targetPos = Camera.main.WorldToScreenPoint (Camera.main.transform);
-			
+
+			/*if (GameState.instance.DidIWin())
+			{
+				GUI.Box(new Rect(Screen.width /2 - 100, 10, 170, 20),  "You Win!");
+			}
+			else if (GameState.instance.DidILose())
+			{
+				GUI.Box(new Rect(Screen.width /2 - 100, 10, 170, 20),  "You Lose!");
+			}
+			else
+			{*/
 			//GUI.Box(new Rect(targetPos.x, Screen.height- targetPos.y - 50, 30, 20), this.GetScore().ToString());
 			//Debug.LogError(targetPos.x + " " + targetPos.y + " ");//
-			GUI.Box(new Rect(Screen.width /2 - 100, 10, 170, 20),  "Your Score Is: " + this.GetScore().ToString());
+				GUI.Box(new Rect(Screen.width /2 - 100, 10, 170, 20),  "Your Score Is: " + this.GetScore().ToString());
+			//}
 		}
 	}
 	
@@ -476,11 +487,7 @@ public class GameState : MonoBehaviour {
 
 	public	bool IsGameOver(){
 		//Is the game over?
-		if(((_leftShips.Count <= 1) && (_rightShips.Count <= 1)) ||
-						(_leftShips.Count == 0) || (_rightShips.Count == 0))
-						return true;
-				else
-						return false;			
+		return DidIWin() || DidILose();			
 	}
 
 		public bool DidIWin(){

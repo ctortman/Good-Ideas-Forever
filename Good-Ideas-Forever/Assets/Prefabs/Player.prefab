@@ -53,8 +53,8 @@ MonoBehaviour:
   ySmooth: 8
   maxXAndY: {x: 0, y: 0}
   minXAndY: {x: 0, y: 0}
-  Moves: 3
-  MaxMoves: 3
+  Moves: 5
+  MaxMoves: 5
 --- !u!120 &12000000
 LineRenderer:
   m_ObjectHideFlags: 1
@@ -121,9 +121,9 @@ SpriteRenderer:
   m_UseLightProbes: 0
   m_LightProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_SortingLayer: 0
+  m_SortingLayer: 1
   m_SortingOrder: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: 3629443665
   m_Sprite: {fileID: 21300000, guid: 446db8540d2cd494a9c507762a7c4fb2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &100100000

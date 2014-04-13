@@ -40,7 +40,7 @@ public class PlayerShip : Ship {
 			this.Moves--;
 			//Debug.LogError("this.Moves == 0");
 		}
-		else if (GameState.instance.IsPlayerTurn)
+		else if (GameState.instance.IsPlayerTurn ) // && !GameState.instance.IsGameOver()
 		{
 			if (Input.GetKeyDown("space"))
 			{
@@ -114,7 +114,7 @@ public class PlayerShip : Ship {
 		{
 			Vector2 targetPos;
 			targetPos = Camera.main.WorldToScreenPoint (new Vector3(this.StartX, this.StartY, transform.position.z));
-			GUI.Box(new Rect(targetPos.x-40, Screen.height- targetPos.y - 50, 75, 20), "Computer's Move");
+			GUI.Box(new Rect(targetPos.x-60, Screen.height- targetPos.y - 50, 115, 20), "Computer's Move");
 		}
 		
 	}
