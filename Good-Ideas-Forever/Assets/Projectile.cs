@@ -2,7 +2,10 @@
 using System.Collections;
 
 public class Projectile : MonoBehaviour {
-
+	public float velocity;
+	public int damage;
+	public GameObject focus;
+	public Weapon weap;
 	// Use this for initialization
 	void Start () {
 	

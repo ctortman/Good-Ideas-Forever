@@ -4,6 +4,8 @@ using System.Collections;
 public class Weapon : MonoBehaviour {
 	private int _health;
 	private int _power;
+	public GameObject projectilePrefab;
+	public GameObject creator;
 
 	// Use this for initialization
 	protected virtual void Start () {
@@ -28,7 +30,7 @@ public class Weapon : MonoBehaviour {
 	/// Gets or sets the property of the enemy ships to hit.
 	/// </summary>
 	/// <value>The property to hit.</value>
-	protected string PropertyToHit 
+	public string PropertyToHit 
 	{
 		get;
 		set;
@@ -64,9 +66,18 @@ public class Weapon : MonoBehaviour {
 		this.Health-=HealthDelta;
 		foreach (EnemyShip s in this.GetTargets()) 
 		{
-			int value = (int)(s.GetType().GetProperty(this.PropertyToHit).GetValue(s, null));
-			s.GetType().GetProperty(this.PropertyToHit).SetValue(s,value + this.Power, null);
-			
+			if(null != projectilePrefab)
+			{
+				GameObject proj = GameObject.Instantiate(projectilePrefab,creator.transform.position,Quaternion.identity) as GameObject;
+				Projectile pro = proj.GetComponent<Projectile>();
+				pro.focus=s.gameObject;
+				pro.weap = this;
+			}
+			else
+			{
+				int value = (int)(s.GetType().GetProperty(this.PropertyToHit).GetValue(s, null));
+				s.GetType().GetProperty(this.PropertyToHit).SetValue(s,value + this.Power, null);
+			}
 			if (s.IsDead)
 			{
 				s.Sink();
