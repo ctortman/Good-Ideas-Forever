@@ -111,6 +111,29 @@ public class GameState : MonoBehaviour {
 		return shipColumn;
 	}
 
+		public bool IsMoveValid(Ship s, int x, int y){
+				if( ! IsSpaceValid (s, x, y) ){
+						return false;
+				}
+				for (int i = 0; i <= s.Length; i++) {
+						if( DoesSpaceContainObject (x, y + i) ){
+								//Check if this Object is NOT ME
+								if(s != GetObjectFromPosition(x,y+i))
+										//If Object is NOT ME, then it's not a valid move
+										return false;
+								//Else condition is that Object is ME, and we're not worried about that.
+						}
+				}
+				//We've iterated through everything and received no falses yet.  True!
+				return true;
+		}
+
+		public bool IsSpaceValid(Ship s, int x, int y)
+		{
+				int column = GetWidthIndex (x);
+				return column >= 0 && this.BoardWidth > column && y + s.Length >= 0 && y < this.BoardHeight;
+		}
+
 	public bool DoesSpaceContainObject(int x, int y)
 	{
 		return GetObjectFromPosition (x, y) != null;
@@ -182,10 +205,26 @@ public class GameState : MonoBehaviour {
 
 				return s.ToArray();
 	}
-	public void MoveObject(int x1, int x2, int y1, int y2)
+		public void MoveObject(int x1, int y1, int x2, int y2)
 	{
-		int column1 = GetWidthIndex (x1);
-		int column2 = GetWidthIndex (x2);
+				Ship whoami = GetObjectFromPosition (x1, y1);
+				bool valid = IsMoveValid (whoami, x2, y2);
+				if (!valid) {
+						//Move is not valid
+						Debug.LogError ("Move to " + x2 + ", " + y2 + " was not valid.");
+				} else {
+						int column1 = GetWidthIndex (x1);
+						int column2 = GetWidthIndex (x2);
+						whoami.StartX = x2;
+						whoami.StartY = y2;
+						for (int i = 0; i < whoami.Length; i++){
+								_gameBoard [x1, y1 + i] = null;
+						}
+						for (int i = 0; i < whoami.Length; i++){
+								_gameBoard [x2, y2 + i] = whoami;
+						}
 
+
+				}
 	}
 }
