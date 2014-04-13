@@ -13,7 +13,7 @@ public class GameState : MonoBehaviour {
 	static public GameState instance;
 	private int _boardHeight = 13;
 	private int _boardWidth = 13;
-	public int teamSize = 4;
+	public int teamSize = 6;
 	private int counter = 250;
 
 	void Awake ()
@@ -45,7 +45,13 @@ public class GameState : MonoBehaviour {
 
 	void FixedUpdate ()
 	{
-
+		if(counter>0)
+			counter--;
+		else
+		{
+			TakeTurn();
+			counter = 250;
+		}
 
 	}
 
@@ -178,9 +184,18 @@ public class GameState : MonoBehaviour {
 	}
 	public Ship GetObjectFromPosition(int x, int y)
 	{
-		return this.GameBoard[GetWidthIndex(x), y];
+		if (IsOnBoard(x, y))
+			return this.GameBoard[GetWidthIndex(x), y];
+		else
+		{
+			return null;
+		}
 	}
-
+	public bool IsOnBoard (int x, int y)
+	{
+		int column = GetWidthIndex(x);
+		return column > -1 && column < this.BoardWidth && y > -1 && y < this.BoardHeight;
+	}
 	public int GetWidthIndex(int x)
 	{
 		return ((_boardWidth - 1)/2 + x);
@@ -266,6 +281,7 @@ public class GameState : MonoBehaviour {
 
 	public void MoveObject(int x1, int y1, int x2, int y2)
 	{
+		//Debug.LogError(string.Format("Move Object: x1:{0} y1:{1} x2:{2} y2:{3}", x1.ToString(), y1.ToString(), x2.ToString(), y2.ToString()));
 		Ship whoami = GetObjectFromPosition (x1, y1);
 		bool valid = IsMoveValid (whoami, x2, y2);
 		if (!valid) 
@@ -279,12 +295,28 @@ public class GameState : MonoBehaviour {
 			whoami.StartY = y2;
 			for (int i = 0; i < whoami.Length; i++)
 			{
-				_gameBoard [x1, y1 + i] = null;
+				_gameBoard [GetWidthIndex(x1), y1 + i] = null;
 			}
 			for (int i = 0; i < whoami.Length; i++)
 			{
-				_gameBoard [x2, y2 + i] = whoami;
+				if (y2 + i > -1 && y2 + i < this.BoardHeight)
+				{
+					_gameBoard [GetWidthIndex(x2), y2 + i] = whoami;
+				}
 			}
+			whoami.gameObject.transform.position = new Vector3(whoami.StartX,whoami.StartY,0);
+		}
+	}
+
+	public void TakeTurn()
+	{
+		foreach (EnemyShip s in _rightShips)
+		{
+			s.MoveAndShoot();
+		}
+		foreach (EnemyShip s in _leftShips)
+		{
+			s.MoveAndShoot();
 		}
 	}
 }

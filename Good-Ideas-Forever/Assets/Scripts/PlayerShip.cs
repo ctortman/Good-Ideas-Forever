@@ -7,7 +7,9 @@ public class PlayerShip : Ship {
 	void Start () {
 		GameObject weap = GameObject.Instantiate(weaponPrefab,Vector3.zero,Quaternion.identity) as GameObject;
 		this.Weapons.Add (weap.GetComponent<RainbowGun>());
-		this.CurrentWeapon = this.Weapons [0].gameObject;
+		this.Weapons[0].FiringDirection = Direction.East;
+		this.Weapons[0].OwningShip = this;
+		this.CurrentWeaponPrefab = this.Weapons [0].gameObject;
 	}
 	
 	// Update is called once per frame

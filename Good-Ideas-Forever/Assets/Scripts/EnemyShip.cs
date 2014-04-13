@@ -15,9 +15,14 @@ public class EnemyShip : Ship {
 		this._peace = 0;
 		
 		GameObject weap = GameObject.Instantiate(weaponPrefab,Vector3.zero,Quaternion.identity) as GameObject;
+		Direction directionToFire = Direction.East;
+		if (this.StartX > 0)
+			directionToFire = Direction.West;
 		this.Weapons.Add (weap.GetComponent<BaseEnemyGun>());
+		this.Weapons[0].FiringDirection = directionToFire;
+		this.Weapons[0].OwningShip = this;
 		
-		this.CurrentWeapon = this.Weapons [0].gameObject;
+		this.CurrentWeaponPrefab = this.Weapons [0].gameObject;
 	}
 	
 	// Update is called once per frame
@@ -51,116 +56,68 @@ public class EnemyShip : Ship {
 				this._peace = value;
 		}
 	}
-
-	public int getGoal (){
-		//GetGoal will return -1, 0 or 1 depending on the movement that should be made by the AI
-		bool above = true;
-		bool below = true;
-		EnemyShip target1 = new EnemyShip ();
-		EnemyShip target2 = new EnemyShip ();
-		//Step 1: Check if there are ships above
-		if (GameState.instance.DoesSpaceContainObject (this.StartX, this.StartY - 1)) 
+	public int getGoal()
+	{
+		int side = this.StartX;
+		Direction directionToShoot = Direction.West;
+		if (side < 0)
 		{
-			above = false;
-		}
-		if (GameState.instance.DoesSpaceContainObject (this.StartX, this.StartY + this.Length)) 
-		{
-			below = false;
+			directionToShoot = Direction.East;
 		}
 
-		if(above){
-			target1 = getClosest (1);
-		}
-		else if(below){
-			target2 = getClosest (-1);
-		}
+		Ship[] targets1;
+		targets1 = GameState.instance.GetShipsFrom(this.WeaponLocation.Key, this.WeaponLocation.Value, directionToShoot);
+		if (targets1.Length != 0)
+			return 0;
 		else
 		{
-			//If neither above or below were true, then we can't move
-			return 0;
-		}
-		if(target1 == target2)
-		{
-			//Ships are the same. This can only be if they're on our current row
-			return 0;
-		}
-		else
-		{
-			int north = target1.StartY;
-			int south = target2.StartY;
-			if (north < south) 
-			{
-				//North is closer
-				return -1;
-			} 
-			else if (south < north) 
-			{
-				//South is closer
-				return 1;
-			}
-			else
-			{
-				//North = South
-				System.Random r = new System.Random();
-				int nextValue = r.Next(1, 100);
-				if(nextValue > 49)
-				{
-					return -1;
-				}
-				else
-				{
-					return 1;
-				}
-			}							
+			return getGoalRecurse(this.WeaponLocation.Key, 1, directionToShoot);
 		}
 	}
-	public EnemyShip getClosest(int direction)
+	int getGoalRecurse(int x, int delta, Direction directionToShoot)
 	{
-		EnemyShip[] targets = this.CurrentWeapon.GetComponent<Weapon>().GetTargets(this.StartX, this.StartY);
-		if(targets.Length > 0)
+		Ship[] targets1 = null;
+		Ship[] targets2 = null;
+		if (GameState.instance.IsMoveValid(this, x, this.WeaponLocation.Value+delta) && GameState.instance.IsOnBoard(x, this.WeaponLocation.Value+delta))
 		{
-			//We have enemies in our row!
-			return targets [0];
+			targets1 = GameState.instance.GetShipsFrom(x, this.WeaponLocation.Value+delta, directionToShoot);
 		}
-		else
+		if (GameState.instance.IsMoveValid(this, x, this.WeaponLocation.Value-delta) &&  GameState.instance.IsOnBoard(x, this.WeaponLocation.Value-delta))
 		{
-			//Given direction, we're either checking up or down
-			if(direction > 0)
+			targets2 = GameState.instance.GetShipsFrom(x, this.WeaponLocation.Value-delta, directionToShoot);
+		}
+		if (targets1 != null && targets2 != null)
+		{
+			if (targets1.Length == 0 && targets2.Length == 0)
 			{
-				//Going Up!
-				for(int myY = StartY; myY >= 0; myY--)
-				{
-					targets = this.CurrentWeapon.GetComponent<Weapon>().GetTargets(this.StartX, this.StartY);
-					if(targets.Length > 0) 
-					{
-						//We have enemies in the current row!
-						return targets [0];
-					}
-				}
-				//Found no targets in the Up direction
-				return null;
+				return getGoalRecurse(x, delta+1, directionToShoot);
 			}
-			else if (direction < 0)
+			else if (targets1.Length == 0)
 			{
-				//Going Down!
-				for(int myY = StartY; myY < GameState.instance.BoardHeight; myY++)
-				{
-					targets = this.CurrentWeapon.GetComponent<Weapon>().GetTargets(this.StartX, this.StartY);
-					if(targets.Length > 0)
-					{
-						//We have enemies in the current row!
-						return targets [0];
-					}
-				}
-				//Found no targets in the down direction
-				return null;
+				return -1;
+			}
+			else if (targets2.Length == 0)
+			{
+				return 1;
+			}
+			else if (targets1.Length > targets2.Length)
+			{
+				return 1;
 			}
 			else 
 			{
-				//Direction is 0, so we can't move.  We've already checked if there was a target in a row and there wasn't.  NULL!
-				return null;
+				return -1;
 			}
 		}
+		else if (targets1 != null)
+		{
+			return 1;
+		}
+		else if (targets2 != null)
+		{
+			return -1;
+		}
+		return 0;
 	}
 	public bool IsPacified
 	{
@@ -179,11 +136,12 @@ public class EnemyShip : Ship {
 	public void MoveAndShoot()
 	{
 		int goal = this.getGoal ();
+		//Debug.LogError(string.Format("x:{0} y:{1} delta: {2}", this.StartX.ToString(), this.StartY.ToString(), goal.ToString()));
 		if (goal != 0)
 		{
 			this.Move(this.StartX, this.StartY + goal);
 		}
-		this.CurrentWeapon.GetComponent<Weapon>().Fire();
+		this.CurrentWeaponPrefab.GetComponent<Weapon>().Fire();
 	}
 	public override Direction ValidMovementDirections {
 		get 

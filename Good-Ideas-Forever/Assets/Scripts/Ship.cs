@@ -11,7 +11,7 @@ public class Ship : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-	
+
 	}
 	
 	// Update is called once per frame
@@ -20,8 +20,12 @@ public class Ship : MonoBehaviour {
 	
 	}
 	
-	public GameObject CurrentWeapon;
-	
+	public GameObject CurrentWeaponPrefab;
+
+	public Weapon CurrentWeapon
+	{
+		get { return this.CurrentWeaponPrefab.GetComponent<Weapon>(); }
+	}	
 	public List<Weapon> Weapons
 	{
 		get { return _weapons; }
