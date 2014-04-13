@@ -1,4 +1,4 @@
-﻿﻿using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -238,7 +238,7 @@ public class GameState : MonoBehaviour {
 		{
 			return false;
 		}
-		for (int i = 0; i <= s.Length; i++) 
+		for (int i = 1; i <= s.Length; i++) 
 		{
 			if( DoesSpaceContainObject (x, y + i) )
 			{
