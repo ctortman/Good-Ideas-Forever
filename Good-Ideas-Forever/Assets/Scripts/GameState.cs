@@ -115,7 +115,7 @@ public class GameState : MonoBehaviour {
 				if( ! IsSpaceValid (s, x, y) ){
 						return false;
 				}
-				for (int i = 0; i <= s.Length; i++) {
+				for (int i = 0; i < s.Length; i++) {
 						if( DoesSpaceContainObject (x, y + i) ){
 								//Check if this Object is NOT ME
 								if(s != GetObjectFromPosition(x,y+i)){
