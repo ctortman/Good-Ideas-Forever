@@ -19,6 +19,8 @@ public class PlayerShip : Ship {
 		GameObject weapon = GameObject.Instantiate(weaponPrefab,Vector3.zero,Quaternion.identity) as GameObject;
 		this.Weapons.Add (weapon.GetComponent<Weapon>());
 		weapon.GetComponent<Weapon>().creator = gameObject;
+		weapon.GetComponent<Weapon>().rain = true;
+		weapon.GetComponent<Weapon>().rend = gameObject.GetComponent<LineRenderer>();
 		this.Weapons[0].FiringDirection = Direction.East;
 		this.Weapons[0].OwningShip = this;
 		this.CurrentWeaponPrefab = this.Weapons [0].gameObject;

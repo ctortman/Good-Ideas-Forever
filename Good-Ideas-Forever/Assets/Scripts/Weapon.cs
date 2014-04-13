@@ -6,12 +6,26 @@ public class Weapon : MonoBehaviour {
 	private int _power;
 	public GameObject projectilePrefab;
 	public GameObject creator;
+	public Texture [] nyan;
+	public LineRenderer rend;
+	int count = 0;
+	int fram = 0;
+	public int animSpeed = 5;
+	public int frameDuration = 100;
+	bool nool = false;
+	public bool rain = false;
 
 	// Use this for initialization
 	protected virtual void Start () {
 		this.HealthDelta = 0;
 		this.Health = 0;
 		this.Power = 0;
+		PlayerShip temp = creator.GetComponent<PlayerShip>();
+		if(rain = true)
+		{
+			Debug.Log("Rain true");
+			rain = true;
+		}
 	}
 	
 	// Update is called once per frame
@@ -64,8 +78,30 @@ public class Weapon : MonoBehaviour {
 	public virtual void Fire()
 	{
 		this.Health-=HealthDelta;
+		Vector3 farthestTarget = Vector3.zero;
+		float distance = 0;
+		float tempDistance;
 		foreach (EnemyShip s in this.GetTargets()) 
 		{
+			tempDistance = (s.gameObject.transform.position-creator.transform.position).magnitude;
+			if(rain) 
+			{
+				Vector3 tVect = new Vector3(farthestTarget.x,farthestTarget.y,-1);
+				Vector3 pVect = new Vector3(creator.transform.position.x,creator.transform.position.y,-1);
+				rend.SetPosition(0,pVect);
+				rend.SetPosition(1,tVect);
+				nool = true;
+				rend.enabled = true;
+				if(tempDistance > distance)
+				{
+					distance = tempDistance;
+					farthestTarget = s.gameObject.transform.position;
+					Debug.Log("Targetting " + s.gameObject.transform.position);
+					//farthestTarget = (s.gameObject.transform.position-creator.transform.position).magnitude*.95*(s.gameObject.transform.position-creator.transform.position);
+					tVect = new Vector3(farthestTarget.x,farthestTarget.y,-1);
+					rend.SetPosition(1,tVect);
+				}
+			}
 			if(null != projectilePrefab)
 			{
 				var projpos = creator.transform.position;
@@ -89,7 +125,6 @@ public class Weapon : MonoBehaviour {
 			{
 				s.MoveToPacifiedLane();
 			}
-			
 		}
 	}
 	/// <summary>
@@ -122,6 +157,28 @@ public class Weapon : MonoBehaviour {
 		get
 		{
 			return Direction.None;
+		}
+	}
+	void FixedUpdate()
+	{
+		if(rain)
+		{
+			if(nool)
+			{
+				//Debug.Log("Nool");
+				Vector3 pVect = new Vector3(creator.transform.position.x,creator.transform.position.y,-1);
+				rend.SetPosition(0,pVect);
+				if(count%animSpeed==0)
+					fram++;
+				rend.material.mainTexture = nyan[fram%9];
+				count++;
+			}
+			if(count > frameDuration)
+			{
+				rend.enabled = false;
+				nool = false;
+				count = 0;
+			}
 		}
 	}
 }
