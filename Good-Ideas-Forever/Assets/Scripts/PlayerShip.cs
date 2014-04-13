@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class PlayerShip : Ship {
@@ -83,8 +83,15 @@ public class PlayerShip : Ship {
 					if (this.TryMove((int)tempX, (int)tempY))
 					{
 						gameObject.transform.position = tempVector;
-						
 					}
+					if (h < 0)
+						this.CurrentWeapon.FiringDirection = Direction.South;
+					else if (h > 0)
+						this.CurrentWeapon.FiringDirection = Direction.North;
+					else if (v < 0)
+						this.CurrentWeapon.FiringDirection = Direction.West;
+					else if (v > 0)
+						this.CurrentWeapon.FiringDirection = Direction.East;
 					this.Moves--;
 				}
 			}
@@ -98,13 +105,13 @@ public class PlayerShip : Ship {
 			GameState gs = GameState.instance;
 			// check north
 
-			if (gs.IsMoveValid(this, this.StartX, this.StartY - 1))
+			if (gs.IsMoveValidOnBoard(this, this.StartX, this.StartY - 1))
 				answer |= Direction.North;
-			if (gs.IsMoveValid(this, this.StartX, this.StartY + 1))
+			if (gs.IsMoveValidOnBoard(this, this.StartX, this.StartY + 1))
 				answer |= Direction.South;
-			if (gs.IsMoveValid(this, this.StartX - 1, this.StartY))
+			if (gs.IsMoveValidOnBoard(this, this.StartX - 1, this.StartY))
 				answer |= Direction.West;
-			if (gs.IsMoveValid(this, this.StartX + 1, this.StartY))
+			if (gs.IsMoveValidOnBoard(this, this.StartX + 1, this.StartY))
 				answer |= Direction.East;
 			return answer;
 		}

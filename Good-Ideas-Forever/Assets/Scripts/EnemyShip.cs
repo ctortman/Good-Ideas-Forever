@@ -8,6 +8,7 @@ public class EnemyShip : Ship {
 	private bool _sunk = false;
 	public GameObject explosionPrefab;
 	public Sprite peaceSprite;
+	public int WaitCount = 0;
 	// Use this for initialization
 	void Start () 
 	{
@@ -21,7 +22,7 @@ public class EnemyShip : Ship {
 		this.Weapons.Add (weapon.GetComponent<Weapon>());
 		this.Weapons[0].FiringDirection = directionToFire;
 		this.Weapons[0].OwningShip = this;
-		
+		this.WaitCount = 0;
 		this.CurrentWeaponPrefab = this.Weapons [0].gameObject;
 	}
 	
@@ -31,8 +32,13 @@ public class EnemyShip : Ship {
 	}
 	public NinjaForce Side 
 	{
-		get; 
-		set;
+		get 
+		{ 
+			if (this.StartX / System.Math.Abs(this.StartX) < 0)
+				return NinjaForce.Left;
+			else
+				return NinjaForce.Right;
+		}
 	}
 	public int MaxHealth;
 
@@ -83,11 +89,11 @@ public class EnemyShip : Ship {
 	{
 		Ship[] targets1 = null;
 		Ship[] targets2 = null;
-		if (GameState.instance.IsMoveValid(this, x, this.WeaponLocation.Value+delta) && GameState.instance.IsOnBoard(x, this.WeaponLocation.Value+delta))
+		if (GameState.instance.IsMoveValidOnBoard(this, x, this.WeaponLocation.Value+delta) && GameState.instance.IsOnBoard(x, this.WeaponLocation.Value+delta))
 		{
 			targets1 = GameState.instance.GetShipsFrom(x, this.WeaponLocation.Value+delta, directionToShoot);
 		}
-		if (GameState.instance.IsMoveValid(this, x, this.WeaponLocation.Value-delta) &&  GameState.instance.IsOnBoard(x, this.WeaponLocation.Value-delta))
+		if (GameState.instance.IsMoveValidOnBoard(this, x, this.WeaponLocation.Value-delta) &&  GameState.instance.IsOnBoard(x, this.WeaponLocation.Value-delta))
 		{
 			targets2 = GameState.instance.GetShipsFrom(x, this.WeaponLocation.Value-delta, directionToShoot);
 		}
@@ -140,57 +146,72 @@ public class EnemyShip : Ship {
 	}
 	public void MoveAndShoot()
 	{
-		if (this.IsOnBoard && !this.IsDead)
+		if (this.WaitCount > 0)
+			this.WaitCount--;
+		else
 		{
-			if (this.IsDead)
+			if (this.IsOnBoard && !this.IsDead)
 			{
-				Debug.LogError("MoveAndShoot(): Trying to move a dead ship.");
-			}
-			else if (this.IsPacified)
-			{
-				if (this.IsInPacifiedLane)
+				if (this.IsDead)
 				{
-					//move 1 toward the edge
-					//EnemyShip s = this;
-					//Debug.Log(string.Format("StartX:{0} StartY: {1} Health:{2} Peace:{3} InLane:{4}",s.StartX, s.StartY, s.Health,s.Peace, s.IsInPacifiedLane));
-					if (this.WeaponLocation.Value > (GameState.instance.BoardHeight/2))
+					Debug.LogError("MoveAndShoot(): Trying to move a dead ship.");
+				}
+				else if (this.IsPacified)
+				{
+					if (this.IsInPacifiedLane)
 					{
-						this.TryMove(this.StartX, this.StartY+1);
+						//move 1 toward the edge
+						//EnemyShip s = this;
+						//Debug.Log(string.Format("StartX:{0} StartY: {1} Health:{2} Peace:{3} InLane:{4}",s.StartX, s.StartY, s.Health,s.Peace, s.IsInPacifiedLane));
+						if (this.WeaponLocation.Value > (GameState.instance.BoardHeight/2))
+						{
+							this.TryMoveOffBoard(this.StartX, this.StartY+1);
+						}
+						else 
+						{
+							this.TryMoveOffBoard(this.StartX, this.StartY-1);
+						}
 					}
-					else 
+					else
 					{
-						this.TryMove(this.StartX, this.StartY-1);
+						this.MoveToPacifiedLane();
 					}
 				}
-				else
+				else 
 				{
-					this.MoveToPacifiedLane();
+					int goal = this.getGoal ();
+					//Debug.LogError(string.Format("x:{0} y:{1} delta: {2}", this.StartX.ToString(), this.StartY.ToString(), goal.ToString()));
+					if (goal != 0)
+					{
+						this.Move(this.StartX, this.StartY + goal);
+					}
+					this.CurrentWeaponPrefab.GetComponent<Weapon>().Fire();
 				}
 			}
 			else 
 			{
-				int goal = this.getGoal ();
-				//Debug.LogError(string.Format("x:{0} y:{1} delta: {2}", this.StartX.ToString(), this.StartY.ToString(), goal.ToString()));
-				if (goal != 0)
-				{
-					this.Move(this.StartX, this.StartY + goal);
-				}
-				this.CurrentWeaponPrefab.GetComponent<Weapon>().Fire();
+				this.Sink();
 			}
-		}
-		else 
-		{
-			this.Sink();
 		}
 	}
 	public override Direction ValidMovementDirections {
 		get 
 		{
 			Direction answer = Direction.None;
-			if (GameState.instance.IsMoveValid(this, this.StartX, this.StartY - 1))
-				answer |= Direction.North;
-			if (GameState.instance.IsMoveValid(this, this.StartX, this.StartY + 1))
-				answer |= Direction.South;
+			if (this.IsPacified)
+			{
+				if (GameState.instance.IsMoveValidOffBoard(this, this.StartX, this.StartY - 1))
+					answer |= Direction.North;
+				if (GameState.instance.IsMoveValidOffBoard(this, this.StartX, this.StartY + 1))
+					answer |= Direction.South;
+			}
+			else
+			{
+				if (GameState.instance.IsMoveValidOnBoard(this, this.StartX, this.StartY - 1))
+					answer |= Direction.North;
+				if (GameState.instance.IsMoveValidOnBoard(this, this.StartX, this.StartY + 1))
+					answer |= Direction.South;
+			}
 			return answer;
 		}
 	}
@@ -214,6 +235,7 @@ public class EnemyShip : Ship {
 	
 	public void MoveToPacifiedLane()
 	{
+		this.WaitCount += 1;
 		GameState gs = GameState.instance;
 		gameObject.GetComponent<SpriteRenderer>().sprite = peaceSprite;
 		GameState.instance.PacificationScore += GameState.instance.PacifiedShipBenefit;
@@ -221,14 +243,14 @@ public class EnemyShip : Ship {
 		{
 			if (gs.GetWidthIndex(this.StartX) == 0)
 			{
-				if (gs.IsMoveValid(this, this.StartX + 1, this.StartY))
+				if (gs.IsMoveValidOffBoard(this, this.StartX + 1, this.StartY))
 				{
 					this.Move(this.StartX + 1, this.StartY);
 				}
 			}
 			else if (gs.GetWidthIndex(this.StartX) == gs.BoardWidth - 1)
 			{
-				if (gs.IsMoveValid(this, this.StartX - 1, this.StartY))
+				if (gs.IsMoveValidOffBoard(this, this.StartX - 1, this.StartY))
 				{
 					this.Move(this.StartX - 1, this.StartY);
 				}
@@ -236,8 +258,8 @@ public class EnemyShip : Ship {
 			else
 			{
 				bool[] possibilities = new bool[2];
-				possibilities[0] = gs.IsMoveValid(this, this.StartX - 1, this.StartY);
-				possibilities[1] = gs.IsMoveValid(this, this.StartX + 1, this.StartY);
+				possibilities[0] = gs.IsMoveValidOffBoard(this, this.StartX - 1, this.StartY);
+				possibilities[1] = gs.IsMoveValidOffBoard(this, this.StartX + 1, this.StartY);
 				if (possibilities[0] && possibilities[1])
 				{
 					System.Random r = new System.Random();

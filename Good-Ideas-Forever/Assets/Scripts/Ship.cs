@@ -50,6 +50,10 @@ public class Ship : MonoBehaviour {
 	{
 		GameState.instance.MoveObject (this, newStartX, newStartY);
 	}
+	public void MoveOffBoard(int newStartX, int newStartY)
+	{
+		GameState.instance.MoveObjectOffBoard (this, newStartX, newStartY);
+	}
 	public virtual Direction ValidMovementDirections
 	{
 		get
@@ -59,7 +63,17 @@ public class Ship : MonoBehaviour {
 	}
 	public bool TryMove(int newStartX, int newStartY)
 	{
-		if (GameState.instance.IsMoveValid(this, newStartX, newStartY))
+		if (GameState.instance.IsMoveValidOnBoard(this, newStartX, newStartY))
+		{
+			Move(newStartX, newStartY);
+			return true;
+		}
+		return false;
+	}
+	public bool TryMoveOffBoard(int newStartX, int newStartY)
+	{
+		bool canMove = GameState.instance.IsMoveValidOffBoard(this, newStartX, newStartY);
+		if (canMove)
 		{
 			Move(newStartX, newStartY);
 			return true;

@@ -27,9 +27,17 @@ public class BaseEnemyGun : Weapon {
 			Ship current = possibleTargets[0];
 			if (current is EnemyShip)
 			{
-				EnemyShip[] targets = new EnemyShip[1];
-				targets[0] = (EnemyShip)current;
-				return targets;
+				EnemyShip enemy = (EnemyShip)current;
+				if (enemy.IsPacified || (enemy.Side == ((EnemyShip)this.OwningShip).Side))
+				{
+					return new EnemyShip [0];
+				}
+				else
+				{
+					EnemyShip[] targets = new EnemyShip[1];
+					targets[0] = (EnemyShip)current;				
+					return targets;
+				}
 			}
 			else
 				return new EnemyShip [0];
