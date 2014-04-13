@@ -7,7 +7,7 @@ public class EnemyShip : Ship {
 	protected int _peace = 0;
 	private bool _sunk = false;
 	public GameObject explosionPrefab;
-	public Texture peaceTex;
+	public Sprite peaceSprite;
 	// Use this for initialization
 	void Start () 
 	{
@@ -215,7 +215,7 @@ public class EnemyShip : Ship {
 	public void MoveToPacifiedLane()
 	{
 		GameState gs = GameState.instance;
-		renderer.material.mainTexture = peaceTex;
+		gameObject.GetComponent<SpriteRenderer>().sprite = peaceSprite;
 		if (!this.IsInPacifiedLane) 
 		{
 			if (gs.GetWidthIndex(this.StartX) == 0)
