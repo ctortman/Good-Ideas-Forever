@@ -56,4 +56,9 @@ public class BaseEnemyGun : Weapon {
 			}
 		}
 	}
+	public override void Fire ()
+	{
+		AudioHelper.CreatePlayAudioObject(BaseManager.instance.sfx3);
+		base.Fire ();
+	}
 }

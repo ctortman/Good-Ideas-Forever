@@ -61,7 +61,7 @@ public class Weapon : MonoBehaviour {
 	/// <summary>
 	/// Fire this weapon.
 	/// </summary>
-	public void Fire()
+	public virtual void Fire()
 	{
 		this.Health-=HealthDelta;
 		foreach (EnemyShip s in this.GetTargets()) 

@@ -292,6 +292,7 @@ public class EnemyShip : Ship {
 	{
 		if (!_sunk)
 		{
+			AudioHelper.CreatePlayAudioObject(BaseManager.instance.sfx1);
 			GameState.instance.SunkScore += GameState.instance.SunkShipCost;
 			int x = this.StartX;
 			int y = this.StartY;

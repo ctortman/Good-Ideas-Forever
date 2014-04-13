@@ -34,4 +34,9 @@ public class RainbowGun : Weapon {
 			return Direction.East | Direction.North | Direction.West | Direction.South;
 		}
 	}
+	public override void Fire ()
+	{
+		AudioHelper.CreatePlayAudioObject(BaseManager.instance.sfx2);
+		base.Fire ();
+	}
 }
