@@ -48,7 +48,7 @@ public class Ship : MonoBehaviour {
 	}
 	public void Move(int newStartX, int newStartY)
 	{
-		GameState.instance.MoveObject (this.StartX, this.StartY, newStartX, newStartY);
+		GameState.instance.MoveObject (this, newStartX, newStartY);
 	}
 	public virtual Direction ValidMovementDirections
 	{

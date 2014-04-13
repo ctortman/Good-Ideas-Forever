@@ -5,6 +5,7 @@ using System;
 public class EnemyShip : Ship {
 	protected int _health = 0;
 	protected int _peace = 0;
+	private bool _sunk = false;
 	public GameObject explosionPrefab;
 	public Texture peaceTex;
 	// Use this for initialization
@@ -139,38 +140,47 @@ public class EnemyShip : Ship {
 	}
 	public void MoveAndShoot()
 	{
-		if (this.IsDead)
+		if (this.IsOnBoard && !this.IsDead)
 		{
-			Debug.LogError("MoveAndShoot(): Trying to move a dead ship.");
-		}
-		else if (this.IsPacified)
-		{
-			if (this.IsInPacifiedLane)
+			if (this.IsDead)
 			{
-				//move 1 toward the edge
-				if (this.WeaponLocation.Value > (GameState.instance.BoardHeight/2))
+				Debug.LogError("MoveAndShoot(): Trying to move a dead ship.");
+			}
+			else if (this.IsPacified)
+			{
+				if (this.IsInPacifiedLane)
 				{
-					this.TryMove(this.StartX, this.StartY+1);
+					//move 1 toward the edge
+					EnemyShip s = this;
+					//Debug.Log(string.Format("StartX:{0} StartY: {1} Health:{2} Peace:{3} InLane:{4}",s.StartX, s.StartY, s.Health,s.Peace, s.IsInPacifiedLane));
+					if (this.WeaponLocation.Value > (GameState.instance.BoardHeight/2))
+					{
+						this.TryMove(this.StartX, this.StartY+1);
+					}
+					else 
+					{
+						this.TryMove(this.StartX, this.StartY-1);
+					}
 				}
-				else 
+				else
 				{
-					this.TryMove(this.StartX, this.StartY-1);
+					this.MoveToPacifiedLane();
 				}
 			}
-			else
+			else 
 			{
-				this.MoveToPacifiedLane();
+				int goal = this.getGoal ();
+				//Debug.LogError(string.Format("x:{0} y:{1} delta: {2}", this.StartX.ToString(), this.StartY.ToString(), goal.ToString()));
+				if (goal != 0)
+				{
+					this.Move(this.StartX, this.StartY + goal);
+				}
+				this.CurrentWeaponPrefab.GetComponent<Weapon>().Fire();
 			}
 		}
 		else 
 		{
-			int goal = this.getGoal ();
-			//Debug.LogError(string.Format("x:{0} y:{1} delta: {2}", this.StartX.ToString(), this.StartY.ToString(), goal.ToString()));
-			if (goal != 0)
-			{
-				this.Move(this.StartX, this.StartY + goal);
-			}
-			this.CurrentWeaponPrefab.GetComponent<Weapon>().Fire();
+			this.Sink();
 		}
 	}
 	public override Direction ValidMovementDirections {
@@ -181,6 +191,23 @@ public class EnemyShip : Ship {
 				answer |= Direction.North;
 			if (GameState.instance.IsMoveValid(this, this.StartX, this.StartY + 1))
 				answer |= Direction.South;
+			return answer;
+		}
+	}
+	
+	public bool IsOnBoard
+	{
+		get
+		{
+			bool answer = false;
+			for (int i = 0; i < this.Length; i++)
+			{
+				if (GameState.instance.IsOnBoard(this.StartX, this.StartY + i))
+				{
+					answer = true;
+					break;
+				}
+			}
 			return answer;
 		}
 	}
@@ -239,11 +266,19 @@ public class EnemyShip : Ship {
 	}
 	public void Sink()
 	{
-		GameObject.Instantiate(explosionPrefab,transform.position, Quaternion.identity);
-		Destroy(gameObject, 1.0f);
-		for (int i = 0; i < this.Length; i++)
+		if (!_sunk)
 		{
-			GameState.instance.GameBoard[GameState.instance.GetWidthIndex(this.StartX), this.StartY + i] = null;
+			int x = this.StartX;
+			int y = this.StartY;
+			GameObject.Instantiate(explosionPrefab,transform.position, Quaternion.identity);
+			
+			for (int i = 0; i < this.Length; i++)
+			{
+				if (GameState.instance.IsOnBoard(x, y + i))
+					GameState.instance.GameBoard[GameState.instance.GetWidthIndex(x), y + i] = null;
+			}
+			Destroy(gameObject, 1.0f);
+			_sunk = true;
 		}
 	}
 }
