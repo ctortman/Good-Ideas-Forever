@@ -68,7 +68,10 @@ public class Weapon : MonoBehaviour {
 		{
 			if(null != projectilePrefab)
 			{
-				GameObject proj = GameObject.Instantiate(projectilePrefab,creator.transform.position,Quaternion.identity) as GameObject;
+				var projpos = creator.transform.position;
+				if(this is BaseEnemyGun)
+					projpos.y += UnityEngine.Random.Range(-0.25f,0.25f);
+				GameObject proj = GameObject.Instantiate(projectilePrefab,projpos,Quaternion.identity) as GameObject;
 				Projectile pro = proj.GetComponent<Projectile>();
 				pro.focus=s.gameObject;
 				pro.weap = this;
