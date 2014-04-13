@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿﻿using UnityEngine;
 using System.Collections.Generic;
 
 public class Ship : MonoBehaviour {
@@ -51,7 +51,7 @@ public class Ship : MonoBehaviour {
 				return new KeyValuePair<int, int>(this.StartX,this.StartY);
 			else
 			{
-				return new KeyValuePair<int, int>(this.StartX, this.StartY + (this.Length/2));
+				return new KeyValuePair<int, int>(this.StartX, this.StartY + ((this.Length - 1)/2));
 			}
 		}
 	}
