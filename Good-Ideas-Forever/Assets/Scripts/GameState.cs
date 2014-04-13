@@ -39,7 +39,7 @@ public class GameState : MonoBehaviour {
 	
 	}
 
-	public Object[,] GameBoard 
+		public Ship[,] GameBoard 
 	{ 
 		get { return this._gameBoard; }
 	}
@@ -111,13 +111,36 @@ public class GameState : MonoBehaviour {
 		return shipColumn;
 	}
 
+		public bool IsMoveValid(Ship s, int x, int y){
+				if( ! IsSpaceValid (s, x, y) ){
+						return false;
+				}
+				for (int i = 0; i <= s.Length; i++) {
+						if( DoesSpaceContainObject (x, y + i) ){
+								//Check if this Object is NOT ME
+								if(s != GetObjectFromPosition(x,y+i))
+										//If Object is NOT ME, then it's not a valid move
+										return false;
+								//Else condition is that Object is ME, and we're not worried about that.
+						}
+				}
+				//We've iterated through everything and received no falses yet.  True!
+				return true;
+		}
+
+		public bool IsSpaceValid(Ship s, int x, int y)
+		{
+				int column = GetWidthIndex (x);
+				return column >= 0 && this.BoardWidth > column && y + s.Length >= 0 && y < this.BoardHeight;
+		}
+
 	public bool DoesSpaceContainObject(int x, int y)
 	{
-		return true;
+		return GetObjectFromPosition (x, y) != null;
 	}
 	public Ship GetObjectFromPosition(int x, int y)
 	{
-		return this.Player;
+				return this.GameBoard[GetWidthIndex(x), y];
 	}
 
 	public int GetWidthIndex(int x)
@@ -125,4 +148,81 @@ public class GameState : MonoBehaviour {
 		return ((_boardWidth - 1)/2 + x);
 	}
 
+	public Ship[] GetShipsFrom(int x, int y, Direction d)
+	{
+				//int column = GetWidthIndex (x);
+				int myY = 0;
+				int myX = 0;
+				List<Ship> s = new List<Ship> ();
+				if( d == Direction.North){
+						if(y == 0){
+								return s.ToArray();
+						}
+						for(myY = y-1; myY >= 0; myY--){
+								if(DoesSpaceContainObject(x,myY)){
+										s.Add (GetObjectFromPosition (x, myY));
+								}
+						}
+						return s.ToArray();
+				}
+				else if(d == Direction.East){
+						if(x < ( ((_boardWidth - 1)/2 )) ){
+								return s.ToArray();
+						}
+						for(myX = x+1; myX <= ( ((_boardWidth - 1)/2 )); myX++){
+								if(DoesSpaceContainObject(myX,y)){
+										s.Add (GetObjectFromPosition (myX, y));
+								}
+						}
+						return s.ToArray();
+				}
+				else if(d == Direction.South){
+						if(y == 0){
+								return s.ToArray();
+						}
+						for(myY = y+1; myY <= _boardHeight; myY++){
+								if(DoesSpaceContainObject(x,myY)){
+										s.Add (GetObjectFromPosition (x, myY));
+								}
+						}
+						return s.ToArray();
+				}
+				else if(d == Direction.West){
+						if(x < ( ((_boardWidth - 1)/2 )*-1) ){
+								return s.ToArray();
+						}
+						for(myX = x-1; myX >= ( ((_boardWidth - 1)/2 )*-1); myX--){
+								if(DoesSpaceContainObject(myX,y)){
+										s.Add (GetObjectFromPosition (myX, y));
+								}
+						}
+						return s.ToArray();
+				}
+				else{
+						Debug.LogError("You're checking a direction that is not handled. Fail!");
+				}
+
+
+				return s.ToArray();
+	}
+		public void MoveObject(int x1, int y1, int x2, int y2)
+	{
+				Ship whoami = GetObjectFromPosition (x1, y1);
+				bool valid = IsMoveValid (whoami, x2, y2);
+				if (!valid) {
+						//Move is not valid
+						Debug.LogError ("Move to " + x2 + ", " + y2 + " was not valid.");
+				} else {
+						whoami.StartX = x2;
+						whoami.StartY = y2;
+						for (int i = 0; i < whoami.Length; i++){
+								_gameBoard [x1, y1 + i] = null;
+						}
+						for (int i = 0; i < whoami.Length; i++){
+								_gameBoard [x2, y2 + i] = whoami;
+						}
+
+
+				}
+	}
 }

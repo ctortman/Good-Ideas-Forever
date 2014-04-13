@@ -12,24 +12,20 @@ public class RainbowGun : Weapon {
 	protected override void Update () {
 	
 	}
-	public override EnemyShip[] GetTargets (int x, int y)
+	public override EnemyShip[] GetTargets (int x, int y, Direction d)
 	{
-		List<EnemyShip> targets = new List<EnemyShip> ();
 		GameState gs = GameState.instance;
-		List<Ship> possibleTargets;
-		int delta = 1;
-		if (this.FiringDirection == Direction.South || this.FiringDirection == Direction.East)
-			delta = -1;
-		if (this.FiringDirection == Direction.North || this.FiringDirection == Direction.South) 
-			possibleTargets = gs.getColumn (x);		
-		else 
-			possibleTargets = gs.getRow(y);
-		
-		
-		Ship current = possibleTargets [0];
-		
-		
+		Ship[] possibleTargets = gs.GetShipsFrom (x, y, d);
+		List<EnemyShip> targets = new List<EnemyShip> ();
+		foreach (Ship s in possibleTargets)
+			if (s is EnemyShip)
+				targets.Add ((EnemyShip)s);
 		return targets.ToArray ();
 	}
-
+	public override Direction ValidFiringDirections {
+		get 
+		{
+			return Direction.East | Direction.North | Direction.West | Direction.South;
+		}
+	}
 }
