@@ -47,7 +47,8 @@ public class CameraLogic : MonoBehaviour
 		{
 			if(m_isHoriAxisInUse == false)
 			{
-				tempX += h;
+				if  (((tempX+h) < maxXAndY.x) && ((tempX+h) > minXAndY.x))
+					tempX += h;
 				m_isHoriAxisInUse = true;
 			}
 		}
@@ -59,7 +60,8 @@ public class CameraLogic : MonoBehaviour
 		{
 			if(m_isVertAxisInUse == false)
 			{
-				tempY += v;
+				if  (((tempY+v) < maxXAndY.y) && ((tempY+v) > minXAndY.y))
+					tempY += v;
 				m_isVertAxisInUse = true;
 			}
 		}
