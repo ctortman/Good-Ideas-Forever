@@ -31,6 +31,23 @@ public class EnemyShip : Ship {
 	void Update () {
 	
 	}
+	void OnGUI()
+	{		
+		if (this == null)
+			Debug.LogError("CANNOT FIND MY PARENT");
+		else
+		{
+			Vector2 targetPos;
+			targetPos = Camera.main.WorldToScreenPoint (new Vector3(this.StartX, this.StartY, transform.position.z));
+			String message = "";
+			for (int i = 0; i < this.Peace; i ++)
+				message += "*";
+			for (int i = 0; i < this.Health - this.Peace; i++)
+				message += "-";
+			GUI.Box(new Rect(targetPos.x-20, Screen.height- targetPos.y - 50, 30, 20), message);
+		}
+	}
+	
 	public NinjaForce Side 
 	{
 		get 
@@ -293,7 +310,9 @@ public class EnemyShip : Ship {
 		if (!_sunk)
 		{
 			AudioHelper.CreatePlayAudioObject(BaseManager.instance.sfx1);
-			GameState.instance.SunkScore += GameState.instance.SunkShipCost;
+			if (!this.IsPacified)
+				GameState.instance.SunkScore += GameState.instance.SunkShipCost;
+			
 			int x = this.StartX;
 			int y = this.StartY;
 			var splode = transform.position;
