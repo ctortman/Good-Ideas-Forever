@@ -38,6 +38,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e03381e0ec474456bcc3f44e9655172, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 0}
+  creator: {fileID: 0}
+  nyan:
+  - {fileID: 2800000, guid: 6be2a1aeb5b973c4592dab9659767933, type: 3}
+  - {fileID: 2800000, guid: 5cd49326bedbfe740be22c48d13cb022, type: 3}
+  - {fileID: 2800000, guid: 95d0c84f392e0414e97950bf7fb5c3cb, type: 3}
+  - {fileID: 2800000, guid: a2b6cd241d5e80a4a8ce180470c428bb, type: 3}
+  - {fileID: 2800000, guid: 9410d4416f824624aa8ca484e411e8e7, type: 3}
+  - {fileID: 2800000, guid: 50cb459e3781c3b4289574d3a1731a17, type: 3}
+  - {fileID: 2800000, guid: 756a839a3ca831949a0be3d4a890858a, type: 3}
+  - {fileID: 2800000, guid: 138abc0a5aa177f41ae247d2c3316934, type: 3}
+  - {fileID: 2800000, guid: 9d11266045d49ac409b5396754c22b38, type: 3}
+  animSpeed: 5
+  frameDuration: 100
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
