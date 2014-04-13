@@ -10,19 +10,19 @@ public class MenuSceneManager : MonoBehaviour
 		// For testing purposes, we check all scenes 
 		if (BaseManager.globalIntroMusic != null)
 		{
-			StartCoroutine (AudioHelper.FadeAudioObject (BaseManager.globalIntroMusic, -0.05f));
+			StartCoroutine (AudioHelper.FadeAudioObject (BaseManager.globalIntroMusic, -0.8f));
 		}
-		if (BaseManager.globalScoresMusic != null)
+		if (BaseManager.globalLoseMusic != null)
 		{
-			StartCoroutine (AudioHelper.FadeAudioObject (BaseManager.globalScoresMusic, -0.25f));
+			StartCoroutine (AudioHelper.FadeAudioObject (BaseManager.globalLoseMusic, -0.8f));
 		}
 		if (BaseManager.globalGameMusic != null)
 		{
-			StartCoroutine (AudioHelper.FadeAudioObject (BaseManager.globalGameMusic, -0.25f));
+			StartCoroutine (AudioHelper.FadeAudioObject (BaseManager.globalGameMusic, -0.8f));
 		}
-		if (BaseManager.globalEndMusic != null)
+		if (BaseManager.globalWinMusic != null)
 		{
-			StartCoroutine (AudioHelper.FadeAudioObject (BaseManager.globalEndMusic, -0.25f));
+			StartCoroutine (AudioHelper.FadeAudioObject (BaseManager.globalWinMusic, -0.8f));
 		}
 		// we make sure we have a null clip to begin with
 		if (BaseManager.globalMenuMusic == null)
@@ -31,7 +31,7 @@ public class MenuSceneManager : MonoBehaviour
 			BaseManager.globalMenuMusic = AudioHelper.CreateGetFadeAudioObject 
 				(BaseManager.instance.menuMusic, true, BaseManager.instance.fadeClip, "Audio-MenuMusic");
 			// play the clip
-			StartCoroutine (AudioHelper.FadeAudioObject (BaseManager.globalMenuMusic, 0.25f));
+			StartCoroutine (AudioHelper.FadeAudioObject (BaseManager.globalMenuMusic, 0.8f));
 		}
 	}
 }

@@ -60,7 +60,7 @@ public class AudioHelper : MonoBehaviour
 				aSource.Play ();
 			}
 
-			return true;
+			//return true;
 		}
 
 		// animation clip is default to fade out (1 to 0), these will look reveresed but they are correct

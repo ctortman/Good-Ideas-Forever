@@ -74,95 +74,11 @@ NavMeshSettings:
     widthInaccuracy: 16.666666
     heightInaccuracy: 10
   m_NavMesh: {fileID: 0}
---- !u!1001 &163011161
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 400000, guid: 580f5aef407b3d84585091df184c690d, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 580f5aef407b3d84585091df184c690d, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 580f5aef407b3d84585091df184c690d, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 580f5aef407b3d84585091df184c690d, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 580f5aef407b3d84585091df184c690d, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 580f5aef407b3d84585091df184c690d, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 580f5aef407b3d84585091df184c690d, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 580f5aef407b3d84585091df184c690d, type: 2}
-      propertyPath: sfxLerpzScream
-      value: 
-      objectReference: {fileID: 8300000, guid: dccc6a2107323cb4b993cf470077ca57, type: 3}
-    - target: {fileID: 11400000, guid: 580f5aef407b3d84585091df184c690d, type: 2}
-      propertyPath: sfxRespawn
-      value: 
-      objectReference: {fileID: 8300000, guid: 3df213d1d7961ba4394fb4cf5fd0d51e, type: 3}
-    - target: {fileID: 11400000, guid: 580f5aef407b3d84585091df184c690d, type: 2}
-      propertyPath: sfxBotExplo
-      value: 
-      objectReference: {fileID: 8300000, guid: a79152d8cd36377409e0a89fa444fe56, type: 3}
-    - target: {fileID: 11400000, guid: 580f5aef407b3d84585091df184c690d, type: 2}
-      propertyPath: sfxCannon
-      value: 
-      objectReference: {fileID: 8300000, guid: dccc6a2107323cb4b993cf470077ca57, type: 3}
-    - target: {fileID: 11400000, guid: 580f5aef407b3d84585091df184c690d, type: 2}
-      propertyPath: sfx1
-      value: 
-      objectReference: {fileID: 8300000, guid: dccc6a2107323cb4b993cf470077ca57, type: 3}
-    - target: {fileID: 11400000, guid: 580f5aef407b3d84585091df184c690d, type: 2}
-      propertyPath: sfx2
-      value: 
-      objectReference: {fileID: 8300000, guid: 3df213d1d7961ba4394fb4cf5fd0d51e, type: 3}
-    - target: {fileID: 11400000, guid: 580f5aef407b3d84585091df184c690d, type: 2}
-      propertyPath: sfx3
-      value: 
-      objectReference: {fileID: 8300000, guid: a79152d8cd36377409e0a89fa444fe56, type: 3}
-    - target: {fileID: 11400000, guid: 580f5aef407b3d84585091df184c690d, type: 2}
-      propertyPath: menuMusic
-      value: 
-      objectReference: {fileID: 8300000, guid: 123899a9a166a7a42a77d5b8a303c4c9, type: 3}
-    - target: {fileID: 11400000, guid: 580f5aef407b3d84585091df184c690d, type: 2}
-      propertyPath: gameMusic
-      value: 
-      objectReference: {fileID: 8300000, guid: 9ef69fe820c36644199a62a85d23f188, type: 3}
-    - target: {fileID: 11400000, guid: 580f5aef407b3d84585091df184c690d, type: 2}
-      propertyPath: introMusic
-      value: 
-      objectReference: {fileID: 8300000, guid: 4b73e71ca2b18de4390920a636e421a7, type: 3}
-    - target: {fileID: 11400000, guid: 580f5aef407b3d84585091df184c690d, type: 2}
-      propertyPath: fadeClip
-      value: 
-      objectReference: {fileID: 7400000, guid: 4af57d68c366cbf4eb28d9b8328fb2b5, type: 2}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 580f5aef407b3d84585091df184c690d, type: 2}
-  m_RootGameObject: {fileID: 524460287}
-  m_IsPrefabParent: 0
-  m_IsExploded: 1
 --- !u!1 &524460287
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 100000, guid: 580f5aef407b3d84585091df184c690d, type: 2}
-  m_PrefabInternal: {fileID: 163011161}
+  m_PrefabInternal: {fileID: 0}
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 524460289}
@@ -179,7 +95,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400000, guid: 580f5aef407b3d84585091df184c690d,
     type: 2}
-  m_PrefabInternal: {fileID: 163011161}
+  m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 524460287}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -189,8 +105,8 @@ MonoBehaviour:
   introMusic: {fileID: 8300000, guid: 4b73e71ca2b18de4390920a636e421a7, type: 3}
   menuMusic: {fileID: 8300000, guid: 123899a9a166a7a42a77d5b8a303c4c9, type: 3}
   gameMusic: {fileID: 8300000, guid: 9ef69fe820c36644199a62a85d23f188, type: 3}
-  scoresMusic: {fileID: 0}
-  endMusic: {fileID: 0}
+  loseMusic: {fileID: 0}
+  winMusic: {fileID: 0}
   fadeClip: {fileID: 7400000, guid: 4af57d68c366cbf4eb28d9b8328fb2b5, type: 2}
   sfx1: {fileID: 8300000, guid: dccc6a2107323cb4b993cf470077ca57, type: 3}
   sfx2: {fileID: 8300000, guid: 3df213d1d7961ba4394fb4cf5fd0d51e, type: 3}
@@ -199,7 +115,7 @@ MonoBehaviour:
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 400000, guid: 580f5aef407b3d84585091df184c690d, type: 2}
-  m_PrefabInternal: {fileID: 163011161}
+  m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 524460287}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -321,7 +237,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 970166027}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.58996928, y: 0, z: -10}
+  m_LocalPosition: {x: -2.57402754, y: .0871086121, z: -9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
