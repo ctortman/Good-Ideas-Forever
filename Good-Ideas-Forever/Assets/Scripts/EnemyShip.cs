@@ -193,42 +193,42 @@ public class EnemyShip : Ship {
 		{
 			if (gs.GetWidthIndex(this.StartX) == 0)
 			{
-				if (gs.IsMoveValid(this, 1, this.StartY))
+				if (gs.IsMoveValid(this, this.StartX + 1, this.StartY))
 				{
-					this.Move(1, this.StartY);
+					this.Move(this.StartX + 1, this.StartY);
 				}
 			}
 			else if (gs.GetWidthIndex(this.StartX) == gs.BoardWidth - 1)
 			{
-				if (gs.IsMoveValid(this, gs.BoardWidth - 1, this.StartY))
+				if (gs.IsMoveValid(this, this.StartX - 1, this.StartY))
 				{
-					this.Move(gs.BoardWidth - 1, this.StartY);
+					this.Move(this.StartX - 1, this.StartY);
 				}
 			}
 			else
 			{
 				bool[] possibilities = new bool[2];
-				possibilities[0] = gs.IsMoveValid(this, gs.BoardWidth - 1, this.StartY);
-				possibilities[1] = gs.IsMoveValid(this, gs.BoardWidth + 1, this.StartY);
+				possibilities[0] = gs.IsMoveValid(this, this.StartX - 1, this.StartY);
+				possibilities[1] = gs.IsMoveValid(this, this.StartX + 1, this.StartY);
 				if (possibilities[0] && possibilities[1])
 				{
 					System.Random r = new System.Random();
 					if (r.Next(0,1) == 1)
 					{
-						this.Move(gs.BoardWidth - 1, this.StartY);
+						this.Move(this.StartX - 1, this.StartY);
 					}
 					else
 					{
-						this.Move(gs.BoardWidth + 1, this.StartY);
+						this.Move(this.StartX + 1, this.StartY);
 					}
 				}
 				else if (possibilities[0])
 				{
-					this.Move(gs.BoardWidth - 1, this.StartY);
+					this.Move(this.StartX - 1, this.StartY);
 				}
 				else if (possibilities[1])
 				{
-					this.Move(gs.BoardWidth + 1, this.StartY);
+					this.Move(this.StartX + 1, this.StartY);
 				}
 			}
 		}

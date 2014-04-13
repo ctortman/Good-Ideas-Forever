@@ -23,7 +23,8 @@ public class RainbowGun : Weapon {
 		{
 			foreach (Ship s in possibleTargets)
 				if (s is EnemyShip)
-					targets.Add ((EnemyShip)s);
+					if (!((EnemyShip)s).IsPacified)
+						targets.Add ((EnemyShip)s);
 		}
 		return targets.ToArray ();
 	}
