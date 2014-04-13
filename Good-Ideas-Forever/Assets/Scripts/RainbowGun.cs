@@ -19,9 +19,12 @@ public class RainbowGun : Weapon {
 		GameState gs = GameState.instance;
 		Ship[] possibleTargets = gs.GetShipsFrom (x, y, d);
 		List<EnemyShip> targets = new List<EnemyShip> ();
-		foreach (Ship s in possibleTargets)
-			if (s is EnemyShip)
-				targets.Add ((EnemyShip)s);
+		if (possibleTargets.Length > 0)
+		{
+			foreach (Ship s in possibleTargets)
+				if (s is EnemyShip)
+					targets.Add ((EnemyShip)s);
+		}
 		return targets.ToArray ();
 	}
 	public override Direction ValidFiringDirections {

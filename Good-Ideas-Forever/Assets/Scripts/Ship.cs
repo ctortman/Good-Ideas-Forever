@@ -1,4 +1,4 @@
-﻿﻿using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 
 public class Ship : MonoBehaviour {
@@ -41,7 +41,15 @@ public class Ship : MonoBehaviour {
 			return Direction.None;
 		}
 	}
-
+	public bool TryMove(int newStartX, int newStartY)
+	{
+		if (GameState.instance.IsMoveValid(this, newStartX, newStartY))
+		{
+			Move(newStartX, newStartY);
+			return true;
+		}
+		return false;
+	}
 
 	public KeyValuePair<int, int> WeaponLocation
 	{

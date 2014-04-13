@@ -12,11 +12,11 @@ public class EnemyShip : Ship {
 		this._health = this.MaxHealth;
 		this._peace = 0;
 		
-		GameObject weap = GameObject.Instantiate(weaponPrefab,Vector3.zero,Quaternion.identity) as GameObject;
+		GameObject weapon = GameObject.Instantiate(weaponPrefab,Vector3.zero,Quaternion.identity) as GameObject;
 		Direction directionToFire = Direction.East;
 		if (this.StartX > 0)
 			directionToFire = Direction.West;
-		this.Weapons.Add (weap.GetComponent<BaseEnemyGun>());
+		this.Weapons.Add (weapon.GetComponent<Weapon>());
 		this.Weapons[0].FiringDirection = directionToFire;
 		this.Weapons[0].OwningShip = this;
 		
@@ -126,25 +126,51 @@ public class EnemyShip : Ship {
 	{
 		get 
 		{
-			return this.Peace >= this._health;
+			return this.Peace >= this.Health;
 		}
 	}
 	public bool IsDead 
 	{
 		get 
 		{
-			return this._health <= 0;
+			return this.Health <= 0;
 		}
 	}
 	public void MoveAndShoot()
 	{
-		int goal = this.getGoal ();
-		//Debug.LogError(string.Format("x:{0} y:{1} delta: {2}", this.StartX.ToString(), this.StartY.ToString(), goal.ToString()));
-		if (goal != 0)
+		if (this.IsDead)
 		{
-			this.Move(this.StartX, this.StartY + goal);
+			Debug.LogError("MoveAndShoot(): Trying to move a dead ship.");
 		}
-		this.CurrentWeaponPrefab.GetComponent<Weapon>().Fire();
+		else if (this.IsPacified)
+		{
+			if (this.IsInPacifiedLane)
+			{
+				//move 1 toward the edge
+				if (this.WeaponLocation.Value > (GameState.instance.BoardHeight/2))
+				{
+					this.TryMove(this.StartX, this.StartY+1);
+				}
+				else 
+				{
+					this.TryMove(this.StartX, this.StartY-1);
+				}
+			}
+			else
+			{
+				this.MoveToPacifiedLane();
+			}
+		}
+		else 
+		{
+			int goal = this.getGoal ();
+			//Debug.LogError(string.Format("x:{0} y:{1} delta: {2}", this.StartX.ToString(), this.StartY.ToString(), goal.ToString()));
+			if (goal != 0)
+			{
+				this.Move(this.StartX, this.StartY + goal);
+			}
+			this.CurrentWeaponPrefab.GetComponent<Weapon>().Fire();
+		}
 	}
 	public override Direction ValidMovementDirections {
 		get 
@@ -208,6 +234,10 @@ public class EnemyShip : Ship {
 	public bool IsInPacifiedLane
 	{
 		get { return this.StartX % 2 == 1; }
+	}
+	public void Sink()
+	{
+	
 	}
 }
 public enum NinjaForce
