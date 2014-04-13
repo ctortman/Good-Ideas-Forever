@@ -61,7 +61,7 @@ public class EnemyShip : Ship {
 		{
 			above = false;
 		}
-		if (GameState.instance.DoesSpaceContainObject (this.StartX, this.StartY + 1)) 
+		if (GameState.instance.DoesSpaceContainObject (this.StartX, this.StartY + this.Length)) 
 		{
 			below = false;
 		}
