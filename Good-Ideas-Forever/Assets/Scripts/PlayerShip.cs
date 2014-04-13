@@ -85,18 +85,36 @@ public class PlayerShip : Ship {
 					{
 						gameObject.transform.position = tempVector;
 					}
-					if (h < 0)
+					if (v < 0)
 						this.CurrentWeapon.FiringDirection = Direction.South;
-					else if (h > 0)
-						this.CurrentWeapon.FiringDirection = Direction.North;
-					else if (v < 0)
-						this.CurrentWeapon.FiringDirection = Direction.West;
 					else if (v > 0)
+						this.CurrentWeapon.FiringDirection = Direction.North;
+					else if (h < 0)
+						this.CurrentWeapon.FiringDirection = Direction.West;
+					else if (h > 0)
 						this.CurrentWeapon.FiringDirection = Direction.East;
 					this.Moves--;
 				}
 			}
 		}
+	}
+	void OnGUI()
+	{		
+		if (this == null)
+			Debug.LogError("CANNOT FIND MY PARENT");
+		else if (GameState.instance.IsPlayerTurn)
+		{
+			Vector2 targetPos;
+			targetPos = Camera.main.WorldToScreenPoint (new Vector3(this.StartX, this.StartY, transform.position.z));
+			GUI.Box(new Rect(targetPos.x-40, Screen.height- targetPos.y - 50, 75, 20), "Your Move");
+		}
+		else
+		{
+			Vector2 targetPos;
+			targetPos = Camera.main.WorldToScreenPoint (new Vector3(this.StartX, this.StartY, transform.position.z));
+			GUI.Box(new Rect(targetPos.x-40, Screen.height- targetPos.y - 50, 75, 20), "Computer's Move");
+		}
+		
 	}
 	
 	public override Direction ValidMovementDirections {

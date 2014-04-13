@@ -57,6 +57,22 @@ public class GameState : MonoBehaviour {
 			this.IsPlayerTurn = true;
 		}
 	}
+	void OnGUI()
+	{		
+		if (this == null)
+			Debug.LogError("CANNOT FIND MY PARENT");
+		else
+		{
+			Vector2 targetPos;
+			Rect cameraRect = Camera.main.pixelRect;
+			
+			//targetPos = Camera.main.WorldToScreenPoint (Camera.main.transform);
+			
+			//GUI.Box(new Rect(targetPos.x, Screen.height- targetPos.y - 50, 30, 20), this.GetScore().ToString());
+			//Debug.LogError(targetPos.x + " " + targetPos.y + " ");//
+			GUI.Box(new Rect(Screen.width /2 - 100, 10, 170, 20),  "Your Score Is: " + this.GetScore().ToString());
+		}
+	}
 	
 	public Ship[,] GameBoard 
 	{ 
@@ -218,7 +234,7 @@ public class GameState : MonoBehaviour {
 		{
 			return false;
 		}
-		for (int i = 0; i <= s.Length; i++) 
+		for (int i = 0; i < s.Length; i++) 
 		{
 			if( DoesSpaceContainObject (x, y + i) )
 			{
@@ -238,7 +254,7 @@ public class GameState : MonoBehaviour {
 		{
 			return false;
 		}
-		for (int i = 1; i <= s.Length; i++) 
+		for (int i = 0; i < s.Length; i++) 
 		{
 			if( DoesSpaceContainObject (x, y + i) )
 			{

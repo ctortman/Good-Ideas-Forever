@@ -50,7 +50,7 @@ public class BaseManager : MonoBehaviour
 			GUILayout.Space (Screen.height*3/4);
 			//if (GUILayout.Button ("Menu Scene", GUILayout.Height (50))) { Application.LoadLevel 
 			//    (1); }
-			if (GUILayout.Button ("Play R.O.W.B.O.A.T.", GUILayout.Height (Screen.height/10))) 
+			if (GUILayout.Button ("Play", GUILayout.Height (Screen.height/10))) 
 			{ Application.LoadLevel 
 				(2); 
 				this.displayButtons = false;
@@ -63,6 +63,7 @@ public class BaseManager : MonoBehaviour
 			// title
 			//GUILayout.Label ("Play a single sound");
 			GUILayout.BeginHorizontal ();
+			/*
 			// Demonstrates playing a single sound clip
 			if (GUILayout.Button ("Play SFX 1")) { AudioHelper.CreatePlayAudioObject 
 				(sfx1); }
@@ -70,6 +71,7 @@ public class BaseManager : MonoBehaviour
 				(sfx2); }
 			if (GUILayout.Button ("Play SFX 3")) { AudioHelper.CreatePlayAudioObject 
 				(sfx3); }
+			*/
 			GUILayout.EndHorizontal ();
 			GUILayout.EndArea ();
 		}
