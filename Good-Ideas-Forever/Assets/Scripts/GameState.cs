@@ -206,9 +206,35 @@ public class GameState : MonoBehaviour {
 		return shipColumn;
 	}
 	
-	public bool IsMoveValid(Ship s, int x, int y)
+	public bool IsSpaceValidOffBoard(Ship s, int x, int y)
 	{
-		if( ! IsSpaceValid (s, x, y) )
+		int column = GetWidthIndex (x);
+		return column >= 0 && this.BoardWidth > column;
+	}
+	
+	public bool IsMoveValidOffBoard(Ship s, int x, int y)
+	{
+		if(!IsSpaceValidOffBoard (s, x, y) )
+		{
+			return false;
+		}
+		for (int i = 0; i <= s.Length; i++) 
+		{
+			if( DoesSpaceContainObject (x, y + i) )
+			{
+				//Check if this Object is NOT ME
+				if(s != GetObjectFromPosition(x,y+i)) //If Object is NOT ME, then it's not a valid move
+					return false;
+			}
+			//Else condition is that Object is ME, and we're not worried about that.
+		}
+		//We've iterated through everything and received no falses yet.  True!
+		return true;	
+	}
+	
+	public bool IsMoveValidOnBoard(Ship s, int x, int y)
+	{
+		if(!IsSpaceValidOnBoard (s, x, y) )
 		{
 			return false;
 		}
@@ -226,7 +252,7 @@ public class GameState : MonoBehaviour {
 		return true;
 	}
 	
-	public bool IsSpaceValid(Ship s, int x, int y)
+	public bool IsSpaceValidOnBoard(Ship s, int x, int y)
 	{
 		int column = GetWidthIndex (x);
 		
@@ -340,11 +366,49 @@ public class GameState : MonoBehaviour {
 	
 	public void MoveObject(Ship s, int x2, int y2)
 	{
+		if (s is EnemyShip)
+		{
+			if (((EnemyShip)s).IsPacified)
+				this.MoveObjectOffBoard(s, x2, y2);
+		}
 		//Debug.LogError(string.Format("Move Object: x1:{0} y1:{1} x2:{2} y2:{3}", x1.ToString(), y1.ToString(), x2.ToString(), y2.ToString()));
-		if (!IsMoveValid (s, x2, y2)) 
+		else if (!IsMoveValidOnBoard (s, x2, y2)) 
 		{
 			//Move is not valid
 			Debug.LogError ("Move to " + x2 + ", " + y2 + " was not valid.");
+		} 
+		else 
+		{
+			int x1 = s.StartX;
+			int y1 = s.StartY;
+			s.StartX = x2;
+			s.StartY = y2;
+			int column1 = GetWidthIndex(x1);
+			int column2 = GetWidthIndex(x2);
+			for (int i = 0; i < s.Length; i++)
+			{
+				if (this.IsOnBoard(x1, y1 + i))
+					this.GameBoard[column1, y1 + i] = null;
+			}
+			for (int i = 0; i < s.Length; i++)
+			{
+				if (y2 + i > -1 && y2 + i < this.BoardHeight)
+				{
+					if (this.IsOnBoard(x2, y2 + i))
+						this.GameBoard[column2, y2 + i] = s;
+				}
+			}
+			//whoami.gameObject.transform.position = new Vector3(whoami.StartX,whoami.StartY,0);
+			s.focus = new Vector3(s.StartX,s.StartY,0);
+		}
+	}
+	public void MoveObjectOffBoard(Ship s, int x2, int y2)
+	{
+		//Debug.LogError(string.Format("Move Object: x1:{0} y1:{1} x2:{2} y2:{3}", x1.ToString(), y1.ToString(), x2.ToString(), y2.ToString()));
+		if (!IsMoveValidOffBoard (s, x2, y2)) 
+		{
+			//Move is not valid
+			Debug.LogError ("Move off board to " + x2 + ", " + y2 + " was not valid.");
 		} 
 		else 
 		{
@@ -384,6 +448,7 @@ public class GameState : MonoBehaviour {
 	
 	public void AITakeTurn()
 	{
+		
 		foreach (EnemyShip s in _leftShips)
 		{
 			s.MoveAndShoot();
