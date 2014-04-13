@@ -25,7 +25,7 @@ public class BaseEnemyGun : Weapon {
 		else 
 		{
 			Ship current = possibleTargets[0];
-			if (((EnemyShip)current))
+			if (current is EnemyShip)
 			{
 				EnemyShip[] targets = new EnemyShip[1];
 				targets[0] = (EnemyShip)current;

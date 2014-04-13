@@ -39,38 +39,8 @@ public class CameraLogic : MonoBehaviour
 	void FixedUpdate ()
 	{
 		Trackfocus();
-		float h = Input.GetAxisRaw("Horizontal");
-		float v = Input.GetAxisRaw("Vertical");
-		float tempX = focus.x;
-		float tempY = focus.y;
-		if( h != 0.0f)
-		{
-			if(m_isHoriAxisInUse == false)
-			{
-				if  (((tempX+h) < maxXAndY.x) && ((tempX+h) > minXAndY.x))
-					tempX += h;
-				m_isHoriAxisInUse = true;
-			}
-		}
-		if( h == 0.0f)
-		{
-			m_isHoriAxisInUse = false;
-		} 
-		if( v != 0.0f)
-		{
-			if(m_isVertAxisInUse == false)
-			{
-				if  (((tempY+v) < maxXAndY.y) && ((tempY+v) > minXAndY.y))
-					tempY += v;
-				m_isVertAxisInUse = true;
-			}
-		}
-		if( v == 0.0f)
-		{
-			m_isVertAxisInUse = false;
-		} 
-		Vector2 tempVector = new Vector2(tempX,tempY);
-		focus = tempVector;
+		
+		focus = GameObject.Find ("Player").transform.position;
 	}
 	
 	
