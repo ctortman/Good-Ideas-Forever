@@ -118,9 +118,10 @@ public class GameState : MonoBehaviour {
 				for (int i = 0; i <= s.Length; i++) {
 						if( DoesSpaceContainObject (x, y + i) ){
 								//Check if this Object is NOT ME
-								if(s != GetObjectFromPosition(x,y+i))
-										//If Object is NOT ME, then it's not a valid move
+								if(s != GetObjectFromPosition(x,y+i)){
+								//If Object is NOT ME, then it's not a valid move
 										return false;
+								}
 								//Else condition is that Object is ME, and we're not worried about that.
 						}
 				}
