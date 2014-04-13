@@ -126,7 +126,6 @@ public class GameState : MonoBehaviour {
 			enemy.StartY = placementIndex % _boardHeight;
 			Vector3 tempVect = new Vector3 (GetWidthPosition(x),y,0);
 			enemy.transform.position = tempVect;
-			Debug.Log("Placing ship " + enemy.ToString());
 			if (((placementIndex + enemy.Length) % _boardHeight) != 0)
 				placementIndex = placementIndex + enemy.Length + 1;
 			else
@@ -229,7 +228,8 @@ public class GameState : MonoBehaviour {
 		}
 		else if(d == Direction.East)
 		{
-			if(x < ( ((_boardWidth - 1)/2 )) )
+			int column = GetWidthIndex(x);
+			if(column<0 || column > this.BoardWidth)
 			{
 				return s.ToArray();
 			}
@@ -244,7 +244,7 @@ public class GameState : MonoBehaviour {
 		}
 		else if(d == Direction.South)
 		{
-			if(y == 0)
+			if(y == this.BoardHeight - 1)
 			{
 				return s.ToArray();
 			}
@@ -259,7 +259,9 @@ public class GameState : MonoBehaviour {
 		}
 		else if(d == Direction.West)
 		{
-			if(x < ( ((_boardWidth - 1)/2 )*-1) )
+			int column = GetWidthIndex(x);
+			if(column<0 || column > this.BoardWidth)
+				//			if(x < ( ((_boardWidth - 1)/2 )) )
 			{
 				return s.ToArray();
 			}
@@ -310,11 +312,11 @@ public class GameState : MonoBehaviour {
 
 	public void TakeTurn()
 	{
-		foreach (EnemyShip s in _rightShips)
+		foreach (EnemyShip s in _leftShips)
 		{
 			s.MoveAndShoot();
 		}
-		foreach (EnemyShip s in _leftShips)
+		foreach (EnemyShip s in _rightShips)
 		{
 			s.MoveAndShoot();
 		}

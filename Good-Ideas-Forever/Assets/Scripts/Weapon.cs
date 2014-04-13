@@ -64,15 +64,9 @@ public class Weapon : MonoBehaviour {
 		this.Health-=HealthDelta;
 		foreach (EnemyShip s in this.GetTargets()) 
 		{
-			if (this.PropertyToHit == "Health")
-			{
-				s.setHealth(this.Power);
-			}
-			else
-			{
-				int value = (int)(s.GetType().GetProperty(this.PropertyToHit).GetValue(s, null));
-				s.GetType().GetProperty(this.PropertyToHit).SetValue(s,value + this.Power, null);
-			}
+			int value = (int)(s.GetType().GetProperty(this.PropertyToHit).GetValue(s, null));
+			s.GetType().GetProperty(this.PropertyToHit).SetValue(s,value + this.Power, null);
+			Debug.Log(s.Health+" "+s.StartX);
 		}
 	}
 	/// <summary>

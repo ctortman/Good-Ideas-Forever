@@ -5,13 +5,11 @@ using System;
 public class EnemyShip : Ship {
 	protected int _health = 0;
 	protected int _peace = 0;
-	protected int _maxHealth = 3;
 	
 	// Use this for initialization
 	void Start () 
 	{
-		this._maxHealth = 3;
-		this._health = this._maxHealth;
+		this._health = this.MaxHealth;
 		this._peace = 0;
 		
 		GameObject weap = GameObject.Instantiate(weaponPrefab,Vector3.zero,Quaternion.identity) as GameObject;
@@ -34,17 +32,22 @@ public class EnemyShip : Ship {
 		get; 
 		set;
 	}
-	public int Health;
-	
-	public void setHealth(int value) 
-	{ 
-		int delta = value - this._health;
-		this._health = value;
-		if (delta < 0)
-		{
-			this.Peace -= value;
+	public int MaxHealth;
+
+	public int Health
+	{
+		get { return _health; }
+		set 
+		{ 
+			int delta = value - this._health;
+			this._health = value;
+			if (delta < 0)
+			{
+				this.Peace -= value;
+			}
 		}
 	}
+
 	public int Peace 
 	{
 		get { return _peace; }
@@ -123,14 +126,14 @@ public class EnemyShip : Ship {
 	{
 		get 
 		{
-			return this.Peace >= this.Health;
+			return this.Peace >= this._health;
 		}
 	}
 	public bool IsDead 
 	{
 		get 
 		{
-			return this.Health <= 0;
+			return this._health <= 0;
 		}
 	}
 	public void MoveAndShoot()

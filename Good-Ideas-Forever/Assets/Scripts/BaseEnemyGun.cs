@@ -5,7 +5,7 @@ public class BaseEnemyGun : Weapon {
 
 	// Use this for initialization
 	protected override void Start () {
-		this.Power = 1;
+		this.Power = -1;
 		this.Health = 999999999;
 		this.PropertyToHit = "Health";
 	}

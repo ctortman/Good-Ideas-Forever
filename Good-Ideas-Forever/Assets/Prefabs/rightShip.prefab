@@ -43,8 +43,8 @@ MonoBehaviour:
   StartX: 0
   StartY: 0
   weaponPrefab: {fileID: 100000, guid: 9e3780d7e74fd42f5a120328c5aa18da, type: 2}
-  CurrentWeapon: {fileID: 100000, guid: 9e3780d7e74fd42f5a120328c5aa18da, type: 2}
-  Health: 0
+  CurrentWeaponPrefab: {fileID: 0}
+  MaxHealth: 3
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1
