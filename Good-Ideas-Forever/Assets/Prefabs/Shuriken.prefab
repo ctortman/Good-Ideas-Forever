@@ -8,10 +8,12 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400000}
-  - 114: {fileID: 11400000}
   - 212: {fileID: 21200000}
+  - 95: {fileID: 9500000}
+  - 114: {fileID: 11400000}
+  - 54: {fileID: 5400000}
   m_Layer: 0
-  m_Name: rightShip
+  m_Name: Shuriken
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24,10 +26,39 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .868369043, y: 5.7993083, z: 0}
+  m_LocalPosition: {x: .232579708, y: 6.04706526, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+--- !u!54 &5400000
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: .0500000007
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!95 &9500000
+Animator:
+  serializedVersion: 2
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 547efa595e1cac5448d82912e48231a3, type: 2}
+  m_CullingMode: 0
+  m_ApplyRootMotion: 1
+  m_AnimatePhysics: 0
+  m_HasTransformHierarchy: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -36,18 +67,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7720111570af24e7f9437c16d71d316f, type: 3}
+  m_Script: {fileID: 11500000, guid: 75a28e835231c5b4f81c11d378e574d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 2
-  StartX: 0
-  StartY: 0
-  weaponPrefab: {fileID: 100000, guid: 9e3780d7e74fd42f5a120328c5aa18da, type: 2}
-  focus: {x: 0, y: 0, z: 0}
-  CurrentWeaponPrefab: {fileID: 0}
-  explosionPrefab: {fileID: 100000, guid: a03b74248184bad43861e57c125bae36, type: 2}
-  peaceSprite: {fileID: 21300000, guid: 71895112dcb9c5c47bb93cb5f7e77ce0, type: 3}
-  MaxHealth: 3
+  velocity: 1
+  damage: 1
+  focus: {fileID: 0}
+  weap: {fileID: 0}
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -67,9 +93,9 @@ SpriteRenderer:
   m_LightProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_SortingLayerID: 0
-  m_Sprite: {fileID: 21300000, guid: 72ae7e0039fb88749abf4eb23b0d6e55, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2812440446d823c49b71bb880178f23d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &100100000
 Prefab:

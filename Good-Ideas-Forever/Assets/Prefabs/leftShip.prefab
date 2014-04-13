@@ -42,7 +42,7 @@ MonoBehaviour:
   Length: 2
   StartX: 0
   StartY: 0
-  weaponPrefab: {fileID: 100000, guid: 15c2bb5ecc2554eb99028279c6222394, type: 2}
+  weaponPrefab: {fileID: 100000, guid: 9e3780d7e74fd42f5a120328c5aa18da, type: 2}
   focus: {x: 0, y: 0, z: 0}
   CurrentWeaponPrefab: {fileID: 0}
   explosionPrefab: {fileID: 100000, guid: a03b74248184bad43861e57c125bae36, type: 2}

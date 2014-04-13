@@ -15,6 +15,7 @@ public class EnemyShip : Ship {
 		this._peace = 0;
 		
 		GameObject weapon = GameObject.Instantiate(weaponPrefab,Vector3.zero,Quaternion.identity) as GameObject;
+		weapon.GetComponent<Weapon>().creator = gameObject;
 		Direction directionToFire = Direction.East;
 		if (this.StartX > 0)
 			directionToFire = Direction.West;
