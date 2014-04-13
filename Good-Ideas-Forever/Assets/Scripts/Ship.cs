@@ -6,6 +6,7 @@ public class Ship : MonoBehaviour {
 	public int Length;
 	public int StartX;
 	public int StartY;
+	public GameObject weaponPrefab;
 
 	// Use this for initialization
 	void Start () 
@@ -19,11 +20,8 @@ public class Ship : MonoBehaviour {
 	
 	}
 	
-	public Weapon CurrentWeapon 
-	{
-		get;
-		set;
-	}
+	public GameObject CurrentWeapon;
+	
 	public List<Weapon> Weapons
 	{
 		get { return _weapons; }

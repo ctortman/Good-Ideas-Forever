@@ -6,14 +6,18 @@ public class EnemyShip : Ship {
 	protected int _health = 0;
 	protected int _peace = 0;
 	protected int _maxHealth = 3;
+	
 	// Use this for initialization
 	void Start () 
 	{
 		this._maxHealth = 3;
 		this._health = this._maxHealth;
 		this._peace = 0;
-		this.Weapons.Add (new BaseEnemyGun ());
-		this.CurrentWeapon = this.Weapons [0];
+		
+		GameObject weap = GameObject.Instantiate(weaponPrefab,Vector3.zero,Quaternion.identity) as GameObject;
+		this.Weapons.Add (weap.GetComponent<BaseEnemyGun>());
+		
+		this.CurrentWeapon = this.Weapons [0].gameObject;
 	}
 	
 	// Update is called once per frame
@@ -112,7 +116,7 @@ public class EnemyShip : Ship {
 	}
 	public EnemyShip getClosest(int direction)
 	{
-		EnemyShip[] targets = this.CurrentWeapon.GetTargets(this.StartX, this.StartY);
+		EnemyShip[] targets = this.CurrentWeapon.GetComponent<Weapon>().GetTargets(this.StartX, this.StartY);
 		if(targets.Length > 0)
 		{
 			//We have enemies in our row!
@@ -126,7 +130,7 @@ public class EnemyShip : Ship {
 				//Going Up!
 				for(int myY = StartY; myY >= 0; myY--)
 				{
-					targets = this.CurrentWeapon.GetTargets(this.StartX, this.StartY);
+					targets = this.CurrentWeapon.GetComponent<Weapon>().GetTargets(this.StartX, this.StartY);
 					if(targets.Length > 0) 
 					{
 						//We have enemies in the current row!
@@ -141,7 +145,7 @@ public class EnemyShip : Ship {
 				//Going Down!
 				for(int myY = StartY; myY < GameState.instance.BoardHeight; myY++)
 				{
-					targets = this.CurrentWeapon.GetTargets(this.StartX, this.StartY);
+					targets = this.CurrentWeapon.GetComponent<Weapon>().GetTargets(this.StartX, this.StartY);
 					if(targets.Length > 0)
 					{
 						//We have enemies in the current row!
@@ -179,7 +183,7 @@ public class EnemyShip : Ship {
 		{
 			this.Move(this.StartX, this.StartY + goal);
 		}
-		this.CurrentWeapon.Fire();
+		this.CurrentWeapon.GetComponent<Weapon>().Fire();
 	}
 	public override Direction ValidMovementDirections {
 		get 

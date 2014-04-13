@@ -5,8 +5,9 @@ public class PlayerShip : Ship {
 
 	// Use this for initialization
 	void Start () {
-		this.Weapons.Add (new RainbowGun ());
-		this.CurrentWeapon = this.Weapons [0];
+		GameObject weap = GameObject.Instantiate(weaponPrefab,Vector3.zero,Quaternion.identity) as GameObject;
+		this.Weapons.Add (weap.GetComponent<RainbowGun>());
+		this.CurrentWeapon = this.Weapons [0].gameObject;
 	}
 	
 	// Update is called once per frame
