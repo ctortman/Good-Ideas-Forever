@@ -238,7 +238,7 @@ public class GameState : MonoBehaviour {
 		{
 			return false;
 		}
-		for (int i = 1; i <= s.Length; i++) 
+		for (int i = 0; i <= s.Length; i++) 
 		{
 			if( DoesSpaceContainObject (x, y + i) )
 			{
@@ -366,10 +366,9 @@ public class GameState : MonoBehaviour {
 	
 	public void MoveObject(Ship s, int x2, int y2)
 	{
-		if (s is EnemyShip)
+		if (s is EnemyShip ? ((EnemyShip)s).IsPacified : false)
 		{
-			if (((EnemyShip)s).IsPacified)
-				this.MoveObjectOffBoard(s, x2, y2);
+			this.MoveObjectOffBoard(s, x2, y2);
 		}
 		//Debug.LogError(string.Format("Move Object: x1:{0} y1:{1} x2:{2} y2:{3}", x1.ToString(), y1.ToString(), x2.ToString(), y2.ToString()));
 		else if (!IsMoveValidOnBoard (s, x2, y2)) 
