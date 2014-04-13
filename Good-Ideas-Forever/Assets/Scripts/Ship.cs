@@ -7,6 +7,7 @@ public class Ship : MonoBehaviour {
 	public int StartX;
 	public int StartY;
 	public GameObject weaponPrefab;
+	public Vector3 focus;
 
 	// Use this for initialization
 	void Start () 
@@ -15,9 +16,24 @@ public class Ship : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () 
+	void FixedUpdate () 
 	{
-	
+		float tempX;
+		float tempY;
+		if  (null  !=  focus)
+		{
+			tempX = Mathf.Lerp(gameObject.transform.position.x,focus.x,0.1f);
+			tempY = Mathf.Lerp(gameObject.transform.position.y,focus.y,0.1f);
+			if(Mathf.Sign(gameObject.transform.position.y-focus.y)!= (-Mathf.Sign(gameObject.transform.localScale.y)))
+				gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x,-gameObject.transform.localScale.y,gameObject.transform.localScale.z);
+			gameObject.transform.position = new Vector3(tempX,tempY,gameObject.transform.position.z);
+			if (Mathf.Abs(focus.x-gameObject.transform.position.x)<.05 && Mathf.Abs(focus.y-gameObject.transform.position.x)<.05 )
+			{
+				tempX = focus.x;
+				tempY = focus.y;
+				gameObject.transform.position = new Vector3(tempX,tempY,gameObject.transform.position.z);
+			}
+		}
 	}
 	
 	public GameObject CurrentWeaponPrefab;
@@ -32,7 +48,7 @@ public class Ship : MonoBehaviour {
 	}
 	public void Move(int newStartX, int newStartY)
 	{
-		GameState.instance.MoveObject (this.StartX, this.StartY, newStartX, newStartY);
+		GameState.instance.MoveObject (this, newStartX, newStartY);
 	}
 	public virtual Direction ValidMovementDirections
 	{

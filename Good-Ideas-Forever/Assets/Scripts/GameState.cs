@@ -15,6 +15,10 @@ public class GameState : MonoBehaviour {
 	private int _boardWidth = 13;
 	public int teamSize = 6;
 	private int counter = 250;
+	public int SunkShipCost = -2;
+	public int PacifiedShipBenefit = 1;
+	public int PacificationScore = 0;
+	public int SunkScore = 0;
 
 	void Awake ()
 	{
@@ -125,7 +129,8 @@ public class GameState : MonoBehaviour {
 			enemy.StartX = GetWidthPosition(placementIndex / _boardHeight);
 			enemy.StartY = placementIndex % _boardHeight;
 			Vector3 tempVect = new Vector3 (GetWidthPosition(x),y,0);
-			enemy.transform.position = tempVect;
+			enemy.gameObject.transform.position = tempVect;
+			enemy.focus = tempVect;
 			if (((placementIndex + enemy.Length) % _boardHeight) != 0)
 				placementIndex = placementIndex + enemy.Length + 1;
 			else
@@ -281,11 +286,11 @@ public class GameState : MonoBehaviour {
 		return s.ToArray();
 	}
 
-	public void MoveObject(int x1, int y1, int x2, int y2)
+	public void MoveObject(Ship s, int x2, int y2)
 	{
 		//Debug.LogError(string.Format("Move Object: x1:{0} y1:{1} x2:{2} y2:{3}", x1.ToString(), y1.ToString(), x2.ToString(), y2.ToString()));
-		Ship whoami = GetObjectFromPosition (x1, y1);
-		bool valid = IsMoveValid (whoami, x2, y2);
+		//Ship whoami = GetObjectFromPosition (x1, y1);
+		bool valid = IsMoveValid (s, x2, y2);
 		if (!valid) 
 		{
 			//Move is not valid
@@ -293,22 +298,39 @@ public class GameState : MonoBehaviour {
 		} 
 		else 
 		{
-			whoami.StartX = x2;
-			whoami.StartY = y2;
-			for (int i = 0; i < whoami.Length; i++)
+			int x1 = s.StartX;
+			int y1 = s.StartY;
+			s.StartX = x2;
+			s.StartY = y2;
+			int column1 = GetWidthIndex(x1);
+			int column2 = GetWidthIndex(x2);
+			for (int i = 0; i < s.Length; i++)
 			{
-				_gameBoard [GetWidthIndex(x1), y1 + i] = null;
+				if (this.IsOnBoard(x1, y1 + i))
+					this.GameBoard[column1, y1 + i] = null;
 			}
-			for (int i = 0; i < whoami.Length; i++)
+			for (int i = 0; i < s.Length; i++)
 			{
 				if (y2 + i > -1 && y2 + i < this.BoardHeight)
 				{
-					_gameBoard [GetWidthIndex(x2), y2 + i] = whoami;
+					if (this.IsOnBoard(x2, y2 + i))
+						this.GameBoard[column2, y2 + i] = s;
 				}
 			}
-			whoami.gameObject.transform.position = new Vector3(whoami.StartX,whoami.StartY,0);
+			//whoami.gameObject.transform.position = new Vector3(whoami.StartX,whoami.StartY,0);
+			s.focus = new Vector3(s.StartX,s.StartY,0);
 		}
 	}
+	public int GetScore()
+	{
+		return PacificationScore + SunkScore;
+	}
+	
+	public int GetScorePercent()
+	{
+		return GetScore()/(teamSize*2*PacifiedShipBenefit);
+	}
+	
 
 	public void TakeTurn()
 	{

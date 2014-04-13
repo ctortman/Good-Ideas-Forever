@@ -66,7 +66,7 @@ public class Weapon : MonoBehaviour {
 		{
 			int value = (int)(s.GetType().GetProperty(this.PropertyToHit).GetValue(s, null));
 			s.GetType().GetProperty(this.PropertyToHit).SetValue(s,value + this.Power, null);
-			Debug.Log(string.Format("StartX:{0} StartY: {1} Health:{2} Peace:{3} InLane:{4}",s.StartX, s.StartY, s.Health,s.Peace, s.IsInPacifiedLane));
+			
 			if (s.IsDead)
 			{
 				s.Sink();
