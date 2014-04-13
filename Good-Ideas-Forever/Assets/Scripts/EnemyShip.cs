@@ -12,7 +12,7 @@ public class EnemyShip : Ship {
 		this._maxHealth = 3;
 		this._health = this._maxHealth;
 		this._peace = 0;
-		this.Weapons.Add (new BaseEnemyGun () { Power = 1, Health = 999999999 });
+		this.Weapons.Add (new BaseEnemyGun ());
 		this.CurrentWeapon = this.Weapons [0];
 	}
 	
