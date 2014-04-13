@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 
 public class Ship : MonoBehaviour {
+	List<Weapon> _weapons = new List<Weapon>();
 
 	// Use this for initialization
-	void Start () {
+	void Start () 
+	{
 	
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () 
+	{
 	
 	}
 	public int Length 
@@ -27,14 +30,28 @@ public class Ship : MonoBehaviour {
 		get;
 		set;
 	}
-	public Weapon CurrentWeapon {
+	public Weapon CurrentWeapon 
+	{
 		get;
 		set;
 	}
+	public List<Weapon> Weapons
+	{
+		get { return _weapons; }
+	}
 	public void Move(int newStartX, int newStartY)
 	{
-
+		GameState.instance.MoveObject (this.StartX, this.StartY, newStartX, newStartY);
 	}
+	public virtual Direction ValidMovementDirections
+	{
+		get
+		{
+			return Direction.None;
+		}
+	}
+
+
 	public KeyValuePair<int, int> WeaponLocation
 	{
 		get 

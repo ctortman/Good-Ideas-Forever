@@ -7,10 +7,13 @@ public class EnemyShip : Ship {
 	protected int _peace = 0;
 	protected int _maxHealth = 3;
 	// Use this for initialization
-	void Start () {
+	void Start () 
+	{
 		this._maxHealth = 3;
 		this._peace = this._maxHealth;
 		this._peace = 0;
+		this.Weapons.Add (new BaseEnemyGun () { Power = 1, Health = 999999999 });
+		this.CurrentWeapon = this.Weapons [0];
 	}
 	
 	// Update is called once per frame
@@ -176,9 +179,20 @@ public class EnemyShip : Ship {
 		int goal = this.getGoal ();
 		if (goal != 0)
 		{
-			GameState.instance.MoveObject(this.StartX, this.StartY, this.StartX, this.StartY + goal);
+			this.Move(this.StartX, this.StartY + goal);
 		}
 		this.CurrentWeapon.Fire();
+	}
+	public override Direction ValidMovementDirections {
+		get 
+		{
+			Direction answer = Direction.None;
+			if (GameState.instance.IsMoveValid(this, this.StartX, this.StartY - 1))
+				answer |= Direction.North;
+			if (GameState.instance.IsMoveValid(this, this.StartX, this.StartY + 1))
+				answer |= Direction.South;
+			return answer;
+		}
 	}
 
 }

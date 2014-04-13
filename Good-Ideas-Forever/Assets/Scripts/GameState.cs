@@ -1,4 +1,4 @@
-﻿﻿using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -214,8 +214,6 @@ public class GameState : MonoBehaviour {
 						//Move is not valid
 						Debug.LogError ("Move to " + x2 + ", " + y2 + " was not valid.");
 				} else {
-						int column1 = GetWidthIndex (x1);
-						int column2 = GetWidthIndex (x2);
 						whoami.StartX = x2;
 						whoami.StartY = y2;
 						for (int i = 0; i < whoami.Length; i++){

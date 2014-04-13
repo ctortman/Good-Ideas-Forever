@@ -85,13 +85,23 @@ public class Weapon : MonoBehaviour {
 	{
 		return GetTargets (x, y, this.FiringDirection);
 	}
+
 	public virtual EnemyShip[] GetTargets(int x, int y, Direction d) 
 	{
 		return new EnemyShip[0];
 	}
+
+	public virtual Direction ValidFiringDirections
+	{
+		get
+		{
+			return Direction.None;
+		}
+	}
 }
 public enum Direction 
 {
+	None = 0x0,
 	North = 0x1,
 	South = 0x2,
 	East = 0x4,
