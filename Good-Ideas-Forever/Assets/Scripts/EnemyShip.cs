@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿﻿using UnityEngine;
 using System.Collections;
 using System;
 
@@ -286,7 +286,7 @@ public class EnemyShip : Ship {
 	}
 	public bool IsInPacifiedLane
 	{
-		get { return this.StartX % 2 == 1; }
+		get { return System.Math.Abs(this.StartX) % 2 == 1; }
 	}
 	public void Sink()
 	{
