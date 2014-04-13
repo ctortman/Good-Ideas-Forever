@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿﻿using UnityEngine;
 using System.Collections;
 using System;
 
@@ -151,7 +151,7 @@ public class EnemyShip : Ship {
 				if (this.IsInPacifiedLane)
 				{
 					//move 1 toward the edge
-					EnemyShip s = this;
+					//EnemyShip s = this;
 					//Debug.Log(string.Format("StartX:{0} StartY: {1} Health:{2} Peace:{3} InLane:{4}",s.StartX, s.StartY, s.Health,s.Peace, s.IsInPacifiedLane));
 					if (this.WeaponLocation.Value > (GameState.instance.BoardHeight/2))
 					{

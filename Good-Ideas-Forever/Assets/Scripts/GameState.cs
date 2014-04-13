@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -38,7 +38,7 @@ public class GameState : MonoBehaviour {
 		//this._player = new PlayerShip ();
 		CreateShips();
 		InitializeShips(this._leftShips,_boardHeight*2);
-		InitializeShips(this._rightShips,_boardHeight*((_boardWidth-1)/2+2));
+		InitializeShips(this._rightShips,_boardHeight*((_boardWidth-1)/2+1));
 	}
 
 	// Update is called once per frame
@@ -88,6 +88,9 @@ public class GameState : MonoBehaviour {
 
 	void CreateShips()
 	{
+		System.Random r = new System.Random(unchecked(System.DateTime.Now.Ticks.GetHashCode()));
+		teamSize = r.Next(0,_boardHeight*((_boardWidth-3)/2));
+	
 		for (int i = 0; i < teamSize; i++)
 		{
 			GameObject newShip = GameObject.Instantiate(rightShipPrefab,Vector3.zero, Quaternion.identity) as GameObject;
@@ -106,20 +109,41 @@ public class GameState : MonoBehaviour {
 
 	void InitializeShips(List<EnemyShip> ships, int startPosition)
 	{
-		int placementIndex = startPosition;
+		int placementIndex = 0;
 		foreach (EnemyShip enemy in ships)
 		{
-			if ((placementIndex % _boardHeight + enemy.Length) > _boardHeight)
-			{
-				placementIndex = (placementIndex / _boardHeight + 1) * _boardHeight;
+			bool a_bool = true;
+			System.Random r = new System.Random(unchecked(System.DateTime.Now.Ticks.GetHashCode()));
+			int mod_y, mod_x;
+
+			while(a_bool){				
+				mod_y = r.Next(0,_boardHeight);
+				mod_x = r.Next(0,(_boardWidth-2)/2) * _boardHeight;
+
+				placementIndex = mod_y + mod_x + startPosition;
+			
+				if ((placementIndex % _boardHeight + enemy.Length) > _boardHeight)
+				{
+					placementIndex = (placementIndex / _boardHeight + 1) * _boardHeight;
+				}
+				if ((placementIndex % _boardHeight - (enemy.Length-1)) < 0)
+				{
+					placementIndex = placementIndex+1;
+				}
+			
+				// Checks to see if the index interating through the board is placing a ship beyond the valid placement area
+				if ((placementIndex >= (_boardHeight * (_boardWidth -1)) && startPosition > ((_boardWidth - 1) / 2 * _boardHeight))
+				    || (placementIndex >= ((_boardWidth - 1) / 2 * _boardHeight) && startPosition < ((_boardWidth - 1) / 2 * _boardHeight)))
+				{
+					Debug.LogError("Attempting to place ships out of bounds");
+					//break;
+					a_bool = true;	
+				}
+				else{
+					a_bool = false;
+				}
 			}
-			// Checks to see if the index interating through the board is placing a ship beyond the valid placement area
-			if ((placementIndex >= (_boardHeight * _boardWidth) && startPosition > ((_boardWidth - 1) / 2 * _boardHeight))
-			    || (placementIndex >= ((_boardWidth - 1) / 2 * _boardHeight) && startPosition < ((_boardWidth - 1) / 2 * _boardHeight)))
-			{
-				Debug.LogError("Attempting to place ships out of bounds");
-				break;
-			}
+
 			int x = placementIndex / _boardHeight;
 			int y = placementIndex % _boardHeight;
 			for (int i = 0; i < enemy.Length; i++)
