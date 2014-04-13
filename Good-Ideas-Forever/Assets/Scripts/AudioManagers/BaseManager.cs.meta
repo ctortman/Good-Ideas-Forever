@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 958637f7bd31c8340883eea86bb19088
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - introMusic: {instanceID: 0}
+  - menuMusic: {instanceID: 0}
+  - gameMusic: {instanceID: 0}
+  - scoresMusic: {instanceID: 0}
+  - endMusic: {instanceID: 0}
+  - fadeClip: {instanceID: 0}
+  - sfx1: {instanceID: 0}
+  - sfx2: {instanceID: 0}
+  - sfx3: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
