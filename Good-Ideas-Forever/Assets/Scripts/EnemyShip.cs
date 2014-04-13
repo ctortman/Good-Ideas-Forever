@@ -5,7 +5,8 @@ using System;
 public class EnemyShip : Ship {
 	protected int _health = 0;
 	protected int _peace = 0;
-	
+	public GameObject explosionPrefab;
+	public Texture peaceTex;
 	// Use this for initialization
 	void Start () 
 	{
@@ -187,6 +188,7 @@ public class EnemyShip : Ship {
 	public void MoveToPacifiedLane()
 	{
 		GameState gs = GameState.instance;
+		renderer.material.mainTexture = peaceTex;
 		if (!this.IsInPacifiedLane) 
 		{
 			if (gs.GetWidthIndex(this.StartX) == 0)
@@ -237,7 +239,12 @@ public class EnemyShip : Ship {
 	}
 	public void Sink()
 	{
-	
+		GameObject.Instantiate(explosionPrefab,transform.position, Quaternion.identity);
+		Destroy(gameObject, 1.0f);
+		for (int i = 0; i < this.Length; i++)
+		{
+			GameState.instance.GameBoard[GameState.instance.GetWidthIndex(this.StartX), this.StartY + i] = null;
+		}
 	}
 }
 public enum NinjaForce
