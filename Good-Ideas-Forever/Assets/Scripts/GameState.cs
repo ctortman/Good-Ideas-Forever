@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -238,7 +238,7 @@ public class GameState : MonoBehaviour {
 		{
 			return false;
 		}
-		for (int i = 0; i <= s.Length; i++) 
+		for (int i = 1; i <= s.Length; i++) 
 		{
 			if( DoesSpaceContainObject (x, y + i) )
 			{
@@ -458,4 +458,25 @@ public class GameState : MonoBehaviour {
 			s.MoveAndShoot();
 		}
 	}
+
+	public	bool IsGameOver(){
+		//Is the game over?
+		if(((_leftShips.Count <= 1) && (_rightShips.Count <= 1)) ||
+						(_leftShips.Count == 0) || (_rightShips.Count == 0))
+						return true;
+				else
+						return false;			
+	}
+
+		public bool DidIWin(){
+			if((GetScore() > 0) && (_leftShips.Count <= 1) && (_rightShips.Count <= 1))
+						return true;
+				else {
+						return false;
+				}
+	}
+
+		public bool DidILose(){
+				return !DidIWin();
+	} 
 }
