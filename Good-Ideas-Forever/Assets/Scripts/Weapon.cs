@@ -7,7 +7,9 @@ public class Weapon : MonoBehaviour {
 
 	// Use this for initialization
 	protected virtual void Start () {
-	
+		this.HealthDelta = 0;
+		this.Health = 0;
+		this.Power = 0;
 	}
 	
 	// Update is called once per frame

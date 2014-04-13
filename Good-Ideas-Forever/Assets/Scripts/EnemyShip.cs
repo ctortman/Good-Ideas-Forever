@@ -10,9 +10,9 @@ public class EnemyShip : Ship {
 	void Start () 
 	{
 		this._maxHealth = 3;
-		this._peace = this._maxHealth;
+		this._health = this._maxHealth;
 		this._peace = 0;
-		this.Weapons.Add (new BaseEnemyGun () { Power = 1, Health = 999999999 });
+		this.Weapons.Add (new BaseEnemyGun ());
 		this.CurrentWeapon = this.Weapons [0];
 	}
 	
@@ -61,7 +61,7 @@ public class EnemyShip : Ship {
 		{
 			above = false;
 		}
-		if (GameState.instance.DoesSpaceContainObject (this.StartX, this.StartY + 1)) 
+		if (GameState.instance.DoesSpaceContainObject (this.StartX, this.StartY + this.Length)) 
 		{
 			below = false;
 		}
@@ -194,7 +194,58 @@ public class EnemyShip : Ship {
 			return answer;
 		}
 	}
-
+	
+	public void MoveToPacifiedLane()
+	{
+		GameState gs = GameState.instance;
+		if (!this.IsInPacifiedLane) 
+		{
+			if (gs.GetWidthIndex(this.StartX) == 0)
+			{
+				if (gs.IsMoveValid(this, 1, this.StartY))
+				{
+					this.Move(1, this.StartY);
+				}
+			}
+			else if (gs.GetWidthIndex(this.StartX) == gs.BoardWidth - 1)
+			{
+				if (gs.IsMoveValid(this, gs.BoardWidth - 1, this.StartY))
+				{
+					this.Move(gs.BoardWidth - 1, this.StartY);
+				}
+			}
+			else
+			{
+				bool[] possibilities = new bool[2];
+				possibilities[0] = gs.IsMoveValid(this, gs.BoardWidth - 1, this.StartY);
+				possibilities[1] = gs.IsMoveValid(this, gs.BoardWidth + 1, this.StartY);
+				if (possibilities[0] && possibilities[1])
+				{
+					System.Random r = new System.Random();
+					if (r.Next(0,1) == 1)
+					{
+						this.Move(gs.BoardWidth - 1, this.StartY);
+					}
+					else
+					{
+						this.Move(gs.BoardWidth + 1, this.StartY);
+					}
+				}
+				else if (possibilities[0])
+				{
+					this.Move(gs.BoardWidth - 1, this.StartY);
+				}
+				else if (possibilities[1])
+				{
+					this.Move(gs.BoardWidth + 1, this.StartY);
+				}
+			}
+		}
+	}
+	public bool IsInPacifiedLane
+	{
+		get { return this.StartX % 2 == 1; }
+	}
 }
 public enum NinjaForce
 {
