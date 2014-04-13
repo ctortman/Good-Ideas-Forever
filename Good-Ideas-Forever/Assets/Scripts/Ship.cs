@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 public class Ship : MonoBehaviour {
 	List<Weapon> _weapons = new List<Weapon>();
+	public int Length;
+	public int StartX;
+	public int StartY;
 
 	// Use this for initialization
 	void Start () 
@@ -15,21 +18,7 @@ public class Ship : MonoBehaviour {
 	{
 	
 	}
-	public int Length 
-	{
-		get;
-		set;
-	}
-	public int StartX
-	{
-		get;
-		set;
-	}
-	public int StartY
-	{
-		get;
-		set;
-	}
+	
 	public Weapon CurrentWeapon 
 	{
 		get;

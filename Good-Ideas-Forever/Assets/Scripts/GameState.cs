@@ -80,11 +80,17 @@ public class GameState : MonoBehaviour {
 	{
 		for (int i = 0; i < teamSize; i++)
 		{
-			_rightShips.Add(GameObject.Instantiate(rightShipPrefab) as EnemyShip);
+			GameObject newShip = GameObject.Instantiate(rightShipPrefab,Vector3.zero, Quaternion.identity) as GameObject;
+			EnemyShip newEnemy = newShip.GetComponent<EnemyShip>();
+			if(newEnemy != null)
+				_rightShips.Add(newEnemy);
 		}
 		for (int i = 0; i < teamSize; i++)
 		{
-			_leftShips.Add(GameObject.Instantiate(leftShipPrefab) as EnemyShip);
+			GameObject newShip = GameObject.Instantiate(leftShipPrefab,Vector3.zero, Quaternion.identity) as GameObject;
+			EnemyShip newEnemy = newShip.GetComponent<EnemyShip>();
+			if(newEnemy != null)
+				_leftShips.Add(newEnemy);
 		}
 	}
 
@@ -110,9 +116,9 @@ public class GameState : MonoBehaviour {
 			{
 				_gameBoard[x , y + i] = enemy;
 			}
-			enemy.StartX = placementIndex / _boardHeight;
+			enemy.StartX = GetWidthPosition(placementIndex / _boardHeight);
 			enemy.StartY = placementIndex % _boardHeight;
-			Vector3 tempVect = new Vector3 (x,y,0);
+			Vector3 tempVect = new Vector3 (GetWidthPosition(x),y,0);
 			enemy.transform.position = tempVect;
 			Debug.Log("Placing ship " + enemy.ToString());
 			if (((placementIndex + enemy.Length) % _boardHeight) != 0)
@@ -178,6 +184,11 @@ public class GameState : MonoBehaviour {
 	public int GetWidthIndex(int x)
 	{
 		return ((_boardWidth - 1)/2 + x);
+	}
+
+	public int GetWidthPosition(int x)
+	{
+		return (x - (_boardWidth - 1)/2);
 	}
 
 	public Ship[] GetShipsFrom(int x, int y, Direction d)
