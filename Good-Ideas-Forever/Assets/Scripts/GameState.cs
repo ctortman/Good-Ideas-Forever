@@ -125,7 +125,8 @@ public class GameState : MonoBehaviour {
 			enemy.StartX = GetWidthPosition(placementIndex / _boardHeight);
 			enemy.StartY = placementIndex % _boardHeight;
 			Vector3 tempVect = new Vector3 (GetWidthPosition(x),y,0);
-			enemy.transform.position = tempVect;
+			enemy.gameObject.transform.position = tempVect;
+			enemy.focus = tempVect;
 			if (((placementIndex + enemy.Length) % _boardHeight) != 0)
 				placementIndex = placementIndex + enemy.Length + 1;
 			else
@@ -306,7 +307,8 @@ public class GameState : MonoBehaviour {
 					_gameBoard [GetWidthIndex(x2), y2 + i] = whoami;
 				}
 			}
-			whoami.gameObject.transform.position = new Vector3(whoami.StartX,whoami.StartY,0);
+			//whoami.gameObject.transform.position = new Vector3(whoami.StartX,whoami.StartY,0);
+			whoami.focus = new Vector3(whoami.StartX,whoami.StartY,0);
 		}
 	}
 
