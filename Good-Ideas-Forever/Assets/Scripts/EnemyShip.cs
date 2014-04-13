@@ -1,4 +1,4 @@
-﻿﻿using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System;
 
@@ -296,8 +296,15 @@ public class EnemyShip : Ship {
 			GameState.instance.SunkScore += GameState.instance.SunkShipCost;
 			int x = this.StartX;
 			int y = this.StartY;
-			GameObject.Instantiate(explosionPrefab,transform.position, Quaternion.identity);
-			
+			var splode = transform.position;
+			for (int i = 0; i < UnityEngine.Random.Range(6,8); i++)
+			{
+				splode = transform.position;
+				splode.x += UnityEngine.Random.Range(-0.25f, 0.25f);
+				splode.y += UnityEngine.Random.Range(-1, 0.75f);
+				GameObject.Instantiate(explosionPrefab, splode, Quaternion.identity);
+			}
+
 			for (int i = 0; i < this.Length; i++)
 			{
 				if (GameState.instance.IsOnBoard(x, y + i))
