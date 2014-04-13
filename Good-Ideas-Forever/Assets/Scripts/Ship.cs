@@ -47,8 +47,6 @@ public class Ship : MonoBehaviour {
 	{
 		get
 		{
-			Direction answer = Direction.None;
-			GameState gs = GameState.instance;
 			return Direction.None;
 		}
 	}
