@@ -19,7 +19,7 @@ public class GameState : MonoBehaviour {
 	public int PacifiedShipBenefit = 1;
 	public int PacificationScore = 0;
 	public int SunkScore = 0;
-
+	
 	void Awake ()
 	{
 		if (null != instance)
@@ -37,8 +37,8 @@ public class GameState : MonoBehaviour {
 		this._leftShips = new List<EnemyShip> ();
 		//this._player = new PlayerShip ();
 		CreateShips();
-		InitializeShips(this._leftShips,_boardHeight*2);
-		InitializeShips(this._rightShips,_boardHeight*((_boardWidth-1)/2+2));
+		InitializeShips(this._leftShips,0);
+		InitializeShips(this._rightShips,_boardHeight*((_boardWidth-1)/2));
 	}
 
 	// Update is called once per frame
@@ -90,6 +90,7 @@ public class GameState : MonoBehaviour {
 	{
 		for (int i = 0; i < teamSize; i++)
 		{
+			Debug.LogError ("Added ship number "+i+" of "+teamSize);
 			GameObject newShip = GameObject.Instantiate(rightShipPrefab,Vector3.zero, Quaternion.identity) as GameObject;
 			EnemyShip newEnemy = newShip.GetComponent<EnemyShip>();
 			if(newEnemy != null)
@@ -97,14 +98,67 @@ public class GameState : MonoBehaviour {
 		}
 		for (int i = 0; i < teamSize; i++)
 		{
+			Debug.LogError ("Added ship number "+i+" of "+teamSize);
 			GameObject newShip = GameObject.Instantiate(leftShipPrefab,Vector3.zero, Quaternion.identity) as GameObject;
 			EnemyShip newEnemy = newShip.GetComponent<EnemyShip>();
 			if(newEnemy != null)
 				_leftShips.Add(newEnemy);
 		}
 	}
+	
+	void InitializeShips (List<EnemyShip> ships, int startPosition)
+		{
+				int placementIndex = 0;
+				System.Random r = new System.Random (unchecked(System.DateTime.Now.Ticks.GetHashCode ()));
+				foreach (EnemyShip enemy in ships) {
+						bool validPos = false;
+						int x, y;
+						while (!validPos) {
+								int mod_y, mod_x;
+								//Go from length-1 to boardHeight so the length can't start below the board
+								//And the origin can't be higher than boardHeight-1 (non-inclusive)
+								mod_y = r.Next (enemy.Length - 1, _boardHeight);
+								//Start at 1 so we don't end up in the first column
+								//Leave right side at boardWidth-1/2 because it's non-inclusive
+								mod_x = r.Next (1, ((_boardWidth - 1) / 2));
+								placementIndex = (mod_x * _boardHeight) + (mod_y + startPosition);
+					
+								if ((placementIndex % _boardHeight + enemy.Length) > _boardHeight) {
+										placementIndex = (placementIndex / _boardHeight + enemy.Length) * _boardHeight;
+								}
+								x = placementIndex / _boardHeight;
+								y = placementIndex % _boardHeight;
+								if ((!isValidStartX (x)) || (!(isValidStartY (y))))
+										continue;
+								if (DoesSpaceContainObject (GetWidthPosition(x), y))
+										continue;
+								if (DoesSpaceContainObject (GetWidthPosition(x), y + (enemy.Length - 1)))
+										continue;
+					
+								//validPos is verified
+								validPos = true;
+							for (int i = 0; i < enemy.Length; i++)
+							{
+								_gameBoard[x , y + i] = enemy;
+							}
+							enemy.StartX = GetWidthPosition(x);
+							enemy.StartY = y;
+							Vector3 tempVect = new Vector3 (GetWidthPosition(x),y,0);
+							enemy.gameObject.transform.position = tempVect;
+							enemy.focus = tempVect;
+						}					
+				}
+		}
+	
+		bool isValidStartX(int x){
+				return (x != 0) && (x%2 == 0) && (System.Math.Abs(x) != (_boardWidth-1)/2);
+		}
+		
+		bool isValidStartY(int y){
+				return (y > 0) && (y < _boardHeight);
+		}
 
-	void InitializeShips(List<EnemyShip> ships, int startPosition)
+	/*void InitializeShips(List<EnemyShip> ships, int startPosition)
 	{
 		int placementIndex = startPosition;
 		foreach (EnemyShip enemy in ships)
@@ -136,7 +190,7 @@ public class GameState : MonoBehaviour {
 			else
 				placementIndex = placementIndex + enemy.Length + _boardHeight;
 		}
-	}
+	}*/
 
 	public List<Ship> getRow(int rowIndex)
 	{
