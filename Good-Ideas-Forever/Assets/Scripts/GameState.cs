@@ -152,10 +152,9 @@ public class GameState : MonoBehaviour {
 			{
 				//Check if this Object is NOT ME
 				if(s != GetObjectFromPosition(x,y+i)) //If Object is NOT ME, then it's not a valid move
-										return false;
-								}
-								//Else condition is that Object is ME, and we're not worried about that.
+					return false;
 			}
+								//Else condition is that Object is ME, and we're not worried about that.
 		}
 		//We've iterated through everything and received no falses yet.  True!
 		return true;
