@@ -13,4 +13,22 @@ public class PlayerShip : Ship {
 	void Update () {
 	
 	}
+	public override Direction ValidMovementDirections {
+		get 
+		{
+			Direction answer = Direction.None;
+			GameState gs = GameState.instance;
+			// check north
+
+			if (gs.IsMoveValid(this, this.StartX, this.StartY - 1))
+				answer |= Direction.North;
+			if (gs.IsMoveValid(this, this.StartX, this.StartY + 1))
+				answer |= Direction.South;
+			if (gs.IsMoveValid(this, this.StartX - 1, this.StartY))
+				answer |= Direction.West;
+			if (gs.IsMoveValid(this, this.StartX + 1, this.StartY))
+				answer |= Direction.East;
+			return answer;
+		}
+	}
 }

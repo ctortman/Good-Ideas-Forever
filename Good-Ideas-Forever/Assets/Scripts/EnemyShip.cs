@@ -183,6 +183,17 @@ public class EnemyShip : Ship {
 		}
 		this.CurrentWeapon.Fire();
 	}
+	public override Direction ValidMovementDirections {
+		get 
+		{
+			Direction answer = Direction.None;
+			if (gs.IsMoveValid(this, this.StartX, this.StartY - 1))
+				answer |= Direction.North;
+			if (gs.IsMoveValid(this, this.StartX, this.StartY + 1))
+				answer |= Direction.South;
+			return answer;
+		}
+	}
 
 }
 public enum NinjaForce
