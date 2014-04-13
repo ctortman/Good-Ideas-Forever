@@ -187,9 +187,9 @@ public class EnemyShip : Ship {
 		get 
 		{
 			Direction answer = Direction.None;
-			if (gs.IsMoveValid(this, this.StartX, this.StartY - 1))
+			if (GameState.instance.IsMoveValid(this, this.StartX, this.StartY - 1))
 				answer |= Direction.North;
-			if (gs.IsMoveValid(this, this.StartX, this.StartY + 1))
+			if (GameState.instance.IsMoveValid(this, this.StartX, this.StartY + 1))
 				answer |= Direction.South;
 			return answer;
 		}
