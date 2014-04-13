@@ -11,6 +11,8 @@ public class PlayerShip : Ship {
 	public Vector2 minXAndY;		// The minimum x and y coordinates the camera can have.
 	private bool m_isHoriAxisInUse = false;
 	private bool m_isVertAxisInUse = false;
+	public int Moves = 3;
+	public int MaxMoves = 3;
 	
 	// Use this for initialization
 	void Start () {
@@ -19,43 +21,74 @@ public class PlayerShip : Ship {
 		this.Weapons[0].FiringDirection = Direction.East;
 		this.Weapons[0].OwningShip = this;
 		this.CurrentWeaponPrefab = this.Weapons [0].gameObject;
+		this.Moves = this.MaxMoves;
 	}
 	
-	void FixedUpdate() {
-		
-		float h = Input.GetAxisRaw("Horizontal");
-		float v = Input.GetAxisRaw("Vertical");
-		float tempX = this.StartX;
-		float tempY = this.StartY;
-		if( h != 0.0f)
+	void FixedUpdate() 
+	{
+		if (this.Moves < 0)
 		{
-			if(m_isHoriAxisInUse == false)
+			this.Moves = this.MaxMoves;
+			GameState.instance.IsPlayerTurn = false;
+		}
+		else if (this.Moves == 0)
+		{
+			this.CurrentWeapon.Fire();
+			this.Moves--;
+			//Debug.LogError("this.Moves == 0");
+		}
+		else if (GameState.instance.IsPlayerTurn)
+		{
+			if (Input.GetKeyDown("space"))
 			{
-				if  (((tempX+h) < maxXAndY.x) && ((tempX+h) > minXAndY.x))
-					tempX += h;
-				m_isHoriAxisInUse = true;
+				this.Moves = 0;
+			}
+			else
+			{
+				float h = Input.GetAxisRaw("Horizontal");
+				float v = Input.GetAxisRaw("Vertical");
+				float tempX = this.StartX;
+				float tempY = this.StartY;
+				if( h != 0.0f)
+				{
+					if(m_isHoriAxisInUse == false)
+					{
+						if  (((tempX+h) < maxXAndY.x) && ((tempX+h) > minXAndY.x))
+							tempX += h;
+						m_isHoriAxisInUse = true;
+					}
+				}
+				if( h == 0.0f)
+				{
+					m_isHoriAxisInUse = false;
+				} 
+				if( v != 0.0f)
+				{
+					if(m_isVertAxisInUse == false)
+					{
+						if  (((tempY+v) < maxXAndY.y) && ((tempY+v) > minXAndY.y))
+							tempY += v;
+						m_isVertAxisInUse = true;
+					}
+				}
+				if( v == 0.0f)
+				{
+					m_isVertAxisInUse = false;
+				} 
+				Vector2 tempVector = new Vector2(tempX,tempY);
+				//Debug.LogError("testing...");
+				
+				if (tempX != this.StartX || tempY != this.StartY)
+				{
+					if (this.TryMove((int)tempX, (int)tempY))
+					{
+						gameObject.transform.position = tempVector;
+						
+					}
+					this.Moves--;
+				}
 			}
 		}
-		if( h == 0.0f)
-		{
-			m_isHoriAxisInUse = false;
-		} 
-		if( v != 0.0f)
-		{
-			if(m_isVertAxisInUse == false)
-			{
-				if  (((tempY+v) < maxXAndY.y) && ((tempY+v) > minXAndY.y))
-					tempY += v;
-				m_isVertAxisInUse = true;
-			}
-		}
-		if( v == 0.0f)
-		{
-			m_isVertAxisInUse = false;
-		} 
-		Vector2 tempVector = new Vector2(tempX,tempY);
-		this.Move((int)tempX, (int)tempY);
-		gameObject.transform.position = tempVector;
 	}
 	
 	public override Direction ValidMovementDirections {

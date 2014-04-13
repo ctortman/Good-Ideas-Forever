@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class GameState : MonoBehaviour {
-
+	
 	private Ship[,] _gameBoard;
 	private List<EnemyShip> _rightShips;
 	private List<EnemyShip> _leftShips;
@@ -19,6 +19,7 @@ public class GameState : MonoBehaviour {
 	public int PacifiedShipBenefit = 1;
 	public int PacificationScore = 0;
 	public int SunkScore = 0;
+	public bool IsPlayerTurn = true;
 	
 	void Awake ()
 	{
@@ -28,7 +29,7 @@ public class GameState : MonoBehaviour {
 		}
 		instance = this;
 	}
-
+	
 	// Use this for initialization
 	void Start () 
 	{
@@ -37,38 +38,36 @@ public class GameState : MonoBehaviour {
 		this._leftShips = new List<EnemyShip> ();
 		//this._player = new PlayerShip ();
 		CreateShips();
-		InitializeShips(this._leftShips,0);
-		InitializeShips(this._rightShips,_boardHeight*((_boardWidth-1)/2));
+		InitializeShips(this._leftShips,_boardHeight*2);
+		InitializeShips(this._rightShips,_boardHeight*((_boardWidth-1)/2+2));
+		this.IsPlayerTurn = true;
 	}
-
+	
 	// Update is called once per frame
 	void Update () 
 	{
 		
 	}
-
+	
 	void FixedUpdate ()
 	{
-		if(counter>0)
-			counter--;
-		else
+		if (!this.IsPlayerTurn)
 		{
-			TakeTurn();
-			counter = 250;
+			this.AITakeTurn();
+			this.IsPlayerTurn = true;
 		}
-
 	}
-
-		public Ship[,] GameBoard 
+	
+	public Ship[,] GameBoard 
 	{ 
 		get { return this._gameBoard; }
 	}
-
+	
 	public List<EnemyShip> RightShips 
 	{
 		get { return _rightShips; }
 	}
-
+	
 	public List<EnemyShip> LeftShips
 	{
 		get { return _leftShips; }
@@ -85,12 +84,11 @@ public class GameState : MonoBehaviour {
 	{
 		get { return _boardWidth; }
 	}
-
+	
 	void CreateShips()
 	{
 		for (int i = 0; i < teamSize; i++)
 		{
-			Debug.LogError ("Added ship number "+i+" of "+teamSize);
 			GameObject newShip = GameObject.Instantiate(rightShipPrefab,Vector3.zero, Quaternion.identity) as GameObject;
 			EnemyShip newEnemy = newShip.GetComponent<EnemyShip>();
 			if(newEnemy != null)
@@ -98,67 +96,64 @@ public class GameState : MonoBehaviour {
 		}
 		for (int i = 0; i < teamSize; i++)
 		{
-			Debug.LogError ("Added ship number "+i+" of "+teamSize);
 			GameObject newShip = GameObject.Instantiate(leftShipPrefab,Vector3.zero, Quaternion.identity) as GameObject;
 			EnemyShip newEnemy = newShip.GetComponent<EnemyShip>();
 			if(newEnemy != null)
 				_leftShips.Add(newEnemy);
 		}
 	}
-	
 	void InitializeShips (List<EnemyShip> ships, int startPosition)
-		{
-				int placementIndex = 0;
-				System.Random r = new System.Random (unchecked(System.DateTime.Now.Ticks.GetHashCode ()));
-				foreach (EnemyShip enemy in ships) {
-						bool validPos = false;
-						int x, y;
-						while (!validPos) {
-								int mod_y, mod_x;
-								//Go from length-1 to boardHeight so the length can't start below the board
-								//And the origin can't be higher than boardHeight-1 (non-inclusive)
-								mod_y = r.Next (enemy.Length - 1, _boardHeight);
-								//Start at 1 so we don't end up in the first column
-								//Leave right side at boardWidth-1/2 because it's non-inclusive
-								mod_x = r.Next (1, ((_boardWidth - 1) / 2));
-								placementIndex = (mod_x * _boardHeight) + (mod_y + startPosition);
-					
-								if ((placementIndex % _boardHeight + enemy.Length) > _boardHeight) {
-										placementIndex = (placementIndex / _boardHeight + enemy.Length) * _boardHeight;
-								}
-								x = placementIndex / _boardHeight;
-								y = placementIndex % _boardHeight;
-								if ((!isValidStartX (x)) || (!(isValidStartY (y))))
-										continue;
-								if (DoesSpaceContainObject (GetWidthPosition(x), y))
-										continue;
-								if (DoesSpaceContainObject (GetWidthPosition(x), y + (enemy.Length - 1)))
-										continue;
-					
-								//validPos is verified
-								validPos = true;
-							for (int i = 0; i < enemy.Length; i++)
-							{
-								_gameBoard[x , y + i] = enemy;
-							}
-							enemy.StartX = GetWidthPosition(x);
-							enemy.StartY = y;
-							Vector3 tempVect = new Vector3 (GetWidthPosition(x),y,0);
-							enemy.gameObject.transform.position = tempVect;
-							enemy.focus = tempVect;
-						}					
+	{
+		int placementIndex = 0;
+		System.Random r = new System.Random (unchecked(System.DateTime.Now.Ticks.GetHashCode ()));
+		foreach (EnemyShip enemy in ships) {
+			bool validPos = false;
+			int x, y;
+			while (!validPos) {
+				int mod_y, mod_x;
+				//Go from length-1 to boardHeight so the length can't start below the board
+				//And the origin can't be higher than boardHeight-1 (non-inclusive)
+				mod_y = r.Next (enemy.Length - 1, _boardHeight);
+				//Start at 1 so we don't end up in the first column
+				//Leave right side at boardWidth-1/2 because it's non-inclusive
+				mod_x = r.Next (1, ((_boardWidth - 1) / 2));
+				placementIndex = (mod_x * _boardHeight) + (mod_y + startPosition);
+				
+				if ((placementIndex % _boardHeight + enemy.Length) > _boardHeight) {
+					placementIndex = (placementIndex / _boardHeight + enemy.Length) * _boardHeight;
 				}
+				x = placementIndex / _boardHeight;
+				y = placementIndex % _boardHeight;
+				if ((!isValidStartX (x)) || (!(isValidStartY (y))))
+					continue;
+				if (DoesSpaceContainObject (GetWidthPosition(x), y))
+					continue;
+				if (DoesSpaceContainObject (GetWidthPosition(x), y + (enemy.Length - 1)))
+					continue;
+				
+				//validPos is verified
+				validPos = true;
+				for (int i = 0; i < enemy.Length; i++)
+				{
+					_gameBoard[x , y + i] = enemy;
+				}
+				enemy.StartX = GetWidthPosition(x);
+				enemy.StartY = y;
+				Vector3 tempVect = new Vector3 (GetWidthPosition(x),y,0);
+				enemy.gameObject.transform.position = tempVect;
+				enemy.focus = tempVect;
+			}					
 		}
+	}
+	bool isValidStartX(int x){
+		return (x != 0) && (x%2 == 0) && (System.Math.Abs(x) != (_boardWidth-1)/2);
+	}
 	
-		bool isValidStartX(int x){
-				return (x != 0) && (x%2 == 0) && (System.Math.Abs(x) != (_boardWidth-1)/2);
-		}
-		
-		bool isValidStartY(int y){
-				return (y > 0) && (y < _boardHeight);
-		}
-
-	/*void InitializeShips(List<EnemyShip> ships, int startPosition)
+	bool isValidStartY(int y){
+		return (y > 0) && (y < _boardHeight);
+	}
+	/*
+	void InitializeShips(List<EnemyShip> ships, int startPosition)
 	{
 		int placementIndex = startPosition;
 		foreach (EnemyShip enemy in ships)
@@ -190,8 +185,9 @@ public class GameState : MonoBehaviour {
 			else
 				placementIndex = placementIndex + enemy.Length + _boardHeight;
 		}
-	}*/
-
+	}
+	*/
+	
 	public List<Ship> getRow(int rowIndex)
 	{
 		int index = GetWidthIndex(rowIndex);
@@ -203,13 +199,13 @@ public class GameState : MonoBehaviour {
 		}
 		return shipRow; 
 	}
-
+	
 	public List<Ship> getColumn(int columnIndex)
 	{
 		List<Ship> shipColumn = new List<Ship> ();
 		return shipColumn;
 	}
-
+	
 	public bool IsMoveValid(Ship s, int x, int y)
 	{
 		if( ! IsSpaceValid (s, x, y) )
@@ -224,18 +220,20 @@ public class GameState : MonoBehaviour {
 				if(s != GetObjectFromPosition(x,y+i)) //If Object is NOT ME, then it's not a valid move
 					return false;
 			}
-								//Else condition is that Object is ME, and we're not worried about that.
+			//Else condition is that Object is ME, and we're not worried about that.
 		}
 		//We've iterated through everything and received no falses yet.  True!
 		return true;
 	}
-
+	
 	public bool IsSpaceValid(Ship s, int x, int y)
 	{
 		int column = GetWidthIndex (x);
+		
 		return column >= 0 && this.BoardWidth > column && y + s.Length >= 0 && y < this.BoardHeight;
 	}
-
+	
+	
 	public bool DoesSpaceContainObject(int x, int y)
 	{
 		return GetObjectFromPosition (x, y) != null;
@@ -258,12 +256,12 @@ public class GameState : MonoBehaviour {
 	{
 		return ((_boardWidth - 1)/2 + x);
 	}
-
+	
 	public int GetWidthPosition(int x)
 	{
 		return (x - (_boardWidth - 1)/2);
 	}
-
+	
 	public Ship[] GetShipsFrom(int x, int y, Direction d)
 	{
 		//int column = GetWidthIndex (x);
@@ -339,13 +337,11 @@ public class GameState : MonoBehaviour {
 		}
 		return s.ToArray();
 	}
-
+	
 	public void MoveObject(Ship s, int x2, int y2)
 	{
 		//Debug.LogError(string.Format("Move Object: x1:{0} y1:{1} x2:{2} y2:{3}", x1.ToString(), y1.ToString(), x2.ToString(), y2.ToString()));
-		//Ship whoami = GetObjectFromPosition (x1, y1);
-		bool valid = IsMoveValid (s, x2, y2);
-		if (!valid) 
+		if (!IsMoveValid (s, x2, y2)) 
 		{
 			//Move is not valid
 			Debug.LogError ("Move to " + x2 + ", " + y2 + " was not valid.");
@@ -385,8 +381,8 @@ public class GameState : MonoBehaviour {
 		return GetScore()/(teamSize*2*PacifiedShipBenefit);
 	}
 	
-
-	public void TakeTurn()
+	
+	public void AITakeTurn()
 	{
 		foreach (EnemyShip s in _leftShips)
 		{

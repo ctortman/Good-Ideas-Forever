@@ -66,6 +66,7 @@ public class Ship : MonoBehaviour {
 		}
 		return false;
 	}
+	
 
 	public KeyValuePair<int, int> WeaponLocation
 	{
