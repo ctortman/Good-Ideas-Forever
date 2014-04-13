@@ -47,7 +47,7 @@ public class BaseManager : MonoBehaviour
 			//GUI.BeginGroup (new Rect (0, 0, 300, 198));
 			//GUI.Box (new Rect (0, 0, 300, 198), backgroundSplash);
 			//GUILayout.Label ("Load a scene and fade in a looped Audio Clip");
-			GUILayout.Space (Screen.height*2/3);
+			GUILayout.Space (Screen.height*3/4);
 			//if (GUILayout.Button ("Menu Scene", GUILayout.Height (50))) { Application.LoadLevel 
 			//    (1); }
 			if (GUILayout.Button ("Play R.O.W.B.O.A.T.", GUILayout.Height (Screen.height/10))) 
