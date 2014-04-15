@@ -80,8 +80,21 @@ public class GameState : MonoBehaviour {
 			{*/
 			//GUI.Box(new Rect(targetPos.x, Screen.height- targetPos.y - 50, 30, 20), this.GetScore().ToString());
 			//Debug.LogError(targetPos.x + " " + targetPos.y + " ");//
-				GUI.Box(new Rect(Screen.width /2 - 100, 10, 170, 20),  "Your Score Is: " + this.GetScore().ToString());
+				
 			//}
+			if (this.IsGameOver())
+			{
+				if (this.DidIWin())
+					GUI.Box(new Rect(Screen.width /2 - 100, 10, 170, 20),  "You Win! " + this.GetScore().ToString());
+				else if (this.DidILose())
+					GUI.Box(new Rect(Screen.width /2 - 100, 10, 170, 20),  "You Lose! " + this.GetScore().ToString());
+				else
+					GUI.Box(new Rect(Screen.width /2 - 100, 10, 170, 20),  "Stalemate! " + this.GetScore().ToString());
+			}
+			else
+			{
+				GUI.Box(new Rect(Screen.width /2 - 100, 10, 170, 20),  "Your Score Is: " + this.GetScore().ToString());
+			}
 		}
 	}
 	
@@ -486,19 +499,16 @@ public class GameState : MonoBehaviour {
 	}
 
 	public	bool IsGameOver(){
-		//Is the game over?
-		return DidIWin() || DidILose();			
+		return (_leftShips.Count < 1) && (_rightShips.Count < 1);		
 	}
 
-		public bool DidIWin(){
-			if((GetScore() > 0) && (_leftShips.Count <= 1) && (_rightShips.Count <= 1))
-						return true;
-				else {
-						return false;
-				}
+	public bool DidIWin()
+	{
+		return this.IsGameOver() && (this.GetScore() > 0);
 	}
 
-		public bool DidILose(){
-				return !DidIWin();
+	public bool DidILose()
+	{
+		return this.IsGameOver() && (this.GetScore() < 0);
 	} 
 }

@@ -44,7 +44,7 @@ public class EnemyShip : Ship {
 				message += "*";
 			for (int i = 0; i < this.Health - this.Peace; i++)
 				message += "-";
-			GUI.Box(new Rect(targetPos.x-20, Screen.height- targetPos.y - 50, 30, 20), message);
+			GUI.Box(new Rect(targetPos.x-20, Screen.height- targetPos.y - 50, 30, 20), this.Health +  " " + this.Peace);
 		}
 	}
 	
@@ -310,9 +310,15 @@ public class EnemyShip : Ship {
 		if (!_sunk)
 		{
 			AudioHelper.CreatePlayAudioObject(BaseManager.instance.sfx1);
-			if (!this.IsPacified)
+			if (this.IsDead)
 				GameState.instance.SunkScore += GameState.instance.SunkShipCost;
 			
+			if (this.Side == NinjaForce.Left)
+				GameState.instance.LeftShips.Remove(this);
+			else
+				GameState.instance.RightShips.Remove(this);
+				
+				
 			int x = this.StartX;
 			int y = this.StartY;
 			var splode = transform.position;

@@ -587,7 +587,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 655ae5f2d9c014f1a9f0672aceafa92c, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 655ae5f2d9c014f1a9f0672aceafa92c, type: 2}
       propertyPath: m_LocalPosition.z
@@ -620,6 +620,10 @@ Prefab:
     - target: {fileID: 11400000, guid: 655ae5f2d9c014f1a9f0672aceafa92c, type: 2}
       propertyPath: minXAndY.x
       value: -6
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 655ae5f2d9c014f1a9f0672aceafa92c, type: 2}
+      propertyPath: StartY
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 655ae5f2d9c014f1a9f0672aceafa92c, type: 2}
@@ -5336,6 +5340,7 @@ GameObject:
   - 212: {fileID: 987617723}
   - 114: {fileID: 987617725}
   - 143: {fileID: 987617726}
+  - 120: {fileID: 987617727}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -5362,9 +5367,9 @@ SpriteRenderer:
   m_UseLightProbes: 0
   m_LightProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_SortingLayer: 0
+  m_SortingLayer: 1
   m_SortingOrder: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: 3629443665
   m_Sprite: {fileID: 21300000, guid: 446db8540d2cd494a9c507762a7c4fb2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!4 &987617724
@@ -5374,7 +5379,7 @@ Transform:
   m_PrefabInternal: {fileID: 164984936}
   m_GameObject: {fileID: 987617722}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -5392,7 +5397,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Length: 1
   StartX: 0
-  StartY: 0
+  StartY: 6
   weaponPrefab: {fileID: 100000, guid: 15c2bb5ecc2554eb99028279c6222394, type: 2}
   focus: {x: 0, y: 0, z: 0}
   CurrentWeaponPrefab: {fileID: 100000, guid: 15c2bb5ecc2554eb99028279c6222394, type: 2}
@@ -5402,8 +5407,8 @@ MonoBehaviour:
   ySmooth: 8
   maxXAndY: {x: 6, y: 12}
   minXAndY: {x: -6, y: 0}
-  Moves: 3
-  MaxMoves: 3
+  Moves: 5
+  MaxMoves: 5
 --- !u!143 &987617726
 CharacterController:
   m_ObjectHideFlags: 0
@@ -5419,6 +5424,41 @@ CharacterController:
   m_SkinWidth: .0799999982
   m_MinMoveDistance: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!120 &987617727
+LineRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 12000000, guid: 655ae5f2d9c014f1a9f0672aceafa92c,
+    type: 2}
+  m_PrefabInternal: {fileID: 164984936}
+  m_GameObject: {fileID: 987617722}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_LightmapIndex: 255
+  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
+  m_Materials:
+  - {fileID: 2100000, guid: f1bf54611a9b917429a0fb89fc390557, type: 2}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 0
+  m_LightProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortingLayerID: 0
+  m_Positions:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 1}
+  m_Parameters:
+    startWidth: 1
+    endWidth: 1
+    m_StartColor:
+      serializedVersion: 2
+      rgba: 4294967295
+    m_EndColor:
+      serializedVersion: 2
+      rgba: 4294967295
+  m_UseWorldSpace: 1
 --- !u!1 &1004600208
 GameObject:
   m_ObjectHideFlags: 0
@@ -6199,7 +6239,7 @@ MonoBehaviour:
   leftShipPrefab: {fileID: 100000, guid: 9cd4133e7e7942c44a9240be75d587c0, type: 2}
   rightShipPrefab: {fileID: 100000, guid: ccbcd4a97c6f04c43b28fc5310251b60, type: 2}
   teamSize: 4
-  SunkShipCost: -2
+  SunkShipCost: -1
   PacifiedShipBenefit: 1
   PacificationScore: 0
   SunkScore: 0
